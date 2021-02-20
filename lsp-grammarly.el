@@ -39,14 +39,89 @@
   :group 'lsp-mode
   :link '(url-link "https://github.com/znck/grammarly"))
 
+(defcustom lsp-grammarly-auto-activate t
+  "Enable Grammarly service when a supported document is opened."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-audience "knowledgeable"
+  "Sets the default audience for every document."
+  :type '(choice (const "general")
+                 (const "knowledgeable")
+                 (const "expert"))
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-dialect "american"
+  "Sets the default audience for every document."
+  :type '(choice (const "american")
+                 (const "australian")
+                 (const "british")
+                 (const "canadian"))
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-domain "general"
+  "Sets the default audience for every document."
+  :type '(choice (const "academic")
+                 (const "business")
+                 (const "general")
+                 (const "technical")
+                 (const "casual")
+                 (const "creative"))
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-emotions '()
+  "Experimental: How do you want to sound."
+  :type 'list
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-goals '()
+  "Experimental: What are you trying to do."
+  :type 'list
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-user-words '()
+  "A list of words as a local dictionary."
+  :type 'list
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-override '()
+  "Per document override for audience, dialect, domain, emotions and goals."
+  :type 'list
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-diagnostics '()
+  "Language-specific rules to ignore unnecessary diagnostics."
+  :type 'list
+  :group 'lsp-grammarly)
+
+;; TODO: Map severity to Flycheck and Flymake.
+(defcustom lsp-grammarly-severity '()
+  "A mapping from Grammarly alert categories to Emacs Flycheck diagnostics
+severity."
+  :type 'string
+  :group 'lsp-grammarly)
+
 (defun lsp-grammarly--server-command ()
   "Generate startup command for Grammarly language server."
   (list (lsp-package-path 'grammarly-ls) "--stdio"))
 
+(lsp-register-custom-settings
+ '(("grammarly.autoActivate" lsp-grammarly-auto-activate t)
+   ("grammarly.audience" lsp-grammarly-audience)
+   ("grammarly.dialect" lsp-grammarly-dialect)
+   ("grammarly.domain" lsp-grammarly-domain)
+   ("grammarly.emotions" lsp-grammarly-emotions)
+   ("grammarly.goals" lsp-grammarly-goals)
+   ("grammarly.userWords" lsp-grammarly-user-words)
+   ("grammarly.overrides" lsp-grammarly-override)
+   ;;("grammarly.diagnostics" lsp-grammarly-diagnostics)
+   ;;("grammarly.severity" lsp-grammarly-severity)
+   ))
+
 (lsp-dependency 'grammarly-ls
                 '(:system "grammarly-ls")
-                '(:npm :package "unofficial-grammarly-language-server"
-                       :path "unofficial-grammarly-language-server"))
+                '(:npm :package "unofficial-grammarly-language-server-2"
+                       :path "unofficial-grammarly-language-server-2"))
 
 (lsp-register-client
  (make-lsp-client
