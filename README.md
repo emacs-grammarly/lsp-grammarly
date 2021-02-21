@@ -7,6 +7,22 @@
 
 ![](./etc/screenshot.png)
 
+## Configuration
+
+`lsp-grammarly` supports following configuration. Each configuration is described in
+detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-settings).
+
+* `grammarly.autoActivate` via `lsp-grammarly-auto-activate`
+* `grammarly.audience` via `lsp-grammarly-audience`
+* `grammarly.dialect` via `lsp-grammarly-dialect`
+* `grammarly.domain` via `lsp-grammarly-domain`
+* `grammarly.emotions` via `lsp-grammarly-emotions`
+* `grammarly.goals` via `lsp-grammarly-goals`
+* `grammarly.userWords` via `lsp-grammarly-user-words`
+* `grammarly.overrides` via `lsp-grammarly-override`
+* `grammarly.diagnostics` via `lsp-grammarly-diagnostics`
+* `grammarly.severity` via `lsp-grammarly-severity`
+
 ## Contribution
 
 If you would like to contribute to this project, you may either
