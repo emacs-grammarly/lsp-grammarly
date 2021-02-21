@@ -5,7 +5,7 @@
 
 ;; Author: Shen, Jen-Chieh <jcs090218@gmail.com>
 ;; Description: LSP Clients for Grammarly.
-;; Keyword:
+;; Keyword: lsp grammarly checker
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "24.3") (lsp-mode "6.1"))
 ;; URL: https://github.com/emacs-grammarly/lsp-grammarly
