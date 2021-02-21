@@ -5,6 +5,8 @@
 
 `lsp-mode` client leveraging [unofficial-grammarly-language-server](https://github.com/znck/grammarly).
 
+![](./etc/screenshot.png)
+
 ## Contribution
 
 If you would like to contribute to this project, you may either
