@@ -7,6 +7,16 @@
 
 ![](./etc/screenshot.png)
 
+## Quickstart
+
+```el
+(use-package lsp-grammarly
+  :ensure t
+  :hook (text-mode . (lambda ()
+                       (require 'lsp-grammarly)
+                       (lsp))))  ; or lsp-deferred
+```
+
 ## Configuration
 
 `lsp-grammarly` supports following configuration. Each configuration is described in
