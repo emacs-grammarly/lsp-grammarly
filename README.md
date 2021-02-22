@@ -30,6 +30,8 @@ detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-setti
 * `grammarly.goals` via `lsp-grammarly-goals`
 * `grammarly.userWords` via `lsp-grammarly-user-words`
 * `grammarly.overrides` via `lsp-grammarly-override`
+* `grammarly.diagnostics` via `lsp-grammarly-diagnostics`
+* `grammarly.severity` via `lsp-grammarly-severity`
 
 ## Contribution
 
