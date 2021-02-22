@@ -91,17 +91,6 @@ Link: https://github.com/znck/grammarly"
   :type 'list
   :group 'lsp-grammarly)
 
-(defcustom lsp-grammarly-diagnostics '()
-  "Language-specific rules to ignore unnecessary diagnostics."
-  :type 'list
-  :group 'lsp-grammarly)
-
-;; TODO: Map severity to Flycheck and Flymake.
-(defcustom lsp-grammarly-severity '()
-  "A mapping from Grammarly alert categories to Emacs diagnostics severity."
-  :type 'string
-  :group 'lsp-grammarly)
-
 (defun lsp-grammarly--server-command ()
   "Generate startup command for Grammarly language server."
   (list (lsp-package-path 'grammarly-ls) "--stdio"))
@@ -114,10 +103,7 @@ Link: https://github.com/znck/grammarly"
    ("grammarly.emotions" lsp-grammarly-emotions)
    ("grammarly.goals" lsp-grammarly-goals)
    ("grammarly.userWords" lsp-grammarly-user-words)
-   ("grammarly.overrides" lsp-grammarly-override)
-   ;;("grammarly.diagnostics" lsp-grammarly-diagnostics)
-   ;;("grammarly.severity" lsp-grammarly-severity)
-   ))
+   ("grammarly.overrides" lsp-grammarly-override)))
 
 (lsp-dependency 'grammarly-ls
                 '(:system "grammarly-ls")
