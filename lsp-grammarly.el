@@ -35,9 +35,11 @@
 (require 'lsp-mode)
 
 (defgroup lsp-grammarly nil
-  "Settings for the Grammarly Language Server."
+  "Settings for the Grammarly Language Server.
+
+Link: https://github.com/znck/grammarly"
   :group 'lsp-mode
-  :link '(url-link "https://github.com/znck/grammarly"))
+  :link '(url-link "https://github.com/emacs-grammarly/lsp-grammarly"))
 
 (defcustom lsp-grammarly-auto-activate t
   "Enable Grammarly service when a supported document is opened."
@@ -96,8 +98,7 @@
 
 ;; TODO: Map severity to Flycheck and Flymake.
 (defcustom lsp-grammarly-severity '()
-  "A mapping from Grammarly alert categories to Emacs Flycheck diagnostics
-severity."
+  "A mapping from Grammarly alert categories to Emacs diagnostics severity."
   :type 'string
   :group 'lsp-grammarly)
 
