@@ -44,7 +44,7 @@ Link: https://github.com/znck/grammarly"
 (defcustom lsp-grammarly-modes '(text-mode latex-mode org-mode markdown-mode)
   "List of major mode that work with Grammarly."
   :type 'list
-  :group 'eglot-grammarly)
+  :group 'lsp-grammarly)
 
 (defcustom lsp-grammarly-auto-activate t
   "Enable Grammarly service when a supported document is opened."
