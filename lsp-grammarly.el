@@ -41,6 +41,11 @@ Link: https://github.com/znck/grammarly"
   :group 'lsp-mode
   :link '(url-link "https://github.com/emacs-grammarly/lsp-grammarly"))
 
+(defcustom lsp-grammarly-modes '(text-mode latex-mode org-mode markdown-mode)
+  "List of major mode that work with Grammarly."
+  :type 'list
+  :group 'eglot-grammarly)
+
 (defcustom lsp-grammarly-auto-activate t
   "Enable Grammarly service when a supported document is opened."
   :type 'boolean
@@ -113,7 +118,7 @@ Link: https://github.com/znck/grammarly"
 (lsp-register-client
  (make-lsp-client
   :new-connection (lsp-stdio-connection #'lsp-grammarly--server-command)
-  :major-modes '(text-mode latex-mode org-mode markdown-mode)
+  :major-modes lsp-grammarly-modes
   :priority -1
   :server-id 'grammarly-ls
   :download-server-fn (lambda (_client callback error-callback _update?)
