@@ -106,7 +106,7 @@ This is only for development use."
   :group 'lsp-grammarly)
 
 ;;
-;; (@* "Utility" )
+;; (@* "Util" )
 ;;
 
 (defun lsp-grammarly--scale-100 (score)
