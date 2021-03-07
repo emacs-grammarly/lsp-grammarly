@@ -7,7 +7,7 @@
 ;; Description: LSP Clients for Grammarly.
 ;; Keyword: lsp grammarly checker
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "24.3") (lsp-mode "6.1"))
+;; Package-Requires: ((emacs "24.3") (lsp-mode "6.1") (ht "2.3"))
 ;; URL: https://github.com/emacs-grammarly/lsp-grammarly
 
 ;; This file is NOT part of GNU Emacs.
@@ -33,6 +33,7 @@
 ;;; Code:
 
 (require 'lsp-mode)
+(require 'ht)
 
 (defgroup lsp-grammarly nil
   "Settings for the Grammarly Language Server.
@@ -104,6 +105,18 @@ This is only for development use."
   :type 'list
   :group 'lsp-grammarly)
 
+;;
+;; (@* "Utility" )
+;;
+
+(defun lsp-grammarly--scale-100 (score)
+  "Convert SCORE to the scale of 100 instead of scale of 1."
+  (* score 100))
+
+;;
+;; (@* "Server" )
+;;
+
 (defun lsp-grammarly--server-command ()
   "Generate startup command for Grammarly language server."
   (or (and lsp-grammarly-server-path
@@ -133,6 +146,59 @@ This is only for development use."
   :server-id 'grammarly-ls
   :download-server-fn (lambda (_client callback error-callback _update?)
                         (lsp-package-ensure 'grammarly-ls callback error-callback))))
+
+;;
+;; (@* "Commands" )
+;;
+
+(defun lsp-grammarly-check-grammar ()
+  "Start the Grammarly checker."
+  (interactive)
+  (lsp-request-async
+   "$/checkGrammar" `(:uri ,(lsp--buffer-uri))
+   (lambda (_) (message "Start Grammarly checker..."))))
+
+(defun lsp-grammarly-stop ()
+  "Stop the Grammarly checker."
+  (interactive)
+  (lsp-request-async
+   "$/stop" `(:uri ,(lsp--buffer-uri))
+   (lambda (_) (message "Stop checking..."))))
+
+(defun lsp-grammarly-get-document-state ()
+  "Return document state."
+  (interactive)
+  (lsp-request-async
+   "$/getDocumentState" `(:uri ,(lsp--buffer-uri))
+   (lambda (state)
+     (let* ((user (ht-get state "user"))
+            (is-premium (ht-get user "isPremium"))
+            (_is-anonymous (ht-get user "isAnonymous"))
+            (username (ht-get user "username"))
+            (text-info (ht-get state "textInfo"))
+            (chars-count (ht-get text-info "charsCount"))
+            (words-count (ht-get text-info "wordsCount"))
+            (readability-score (ht-get text-info "readabilityScore"))
+            (score (ht-get state "score"))
+            (scores (ht-get state "scores"))
+            (clarity (ht-get scores "Clarity"))
+            (tone (ht-get scores "Tone"))
+            (correctness (ht-get scores "Correctness"))
+            (general-score (ht-get scores "GeneralScore"))
+            (engagement (ht-get scores "Engagement")))
+       (message
+        "[User] %s (%s)
+[Text-Info] Readability: %s, C: %s, W: %s
+[Text Score] %s out of 100
+Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
+        username (if is-premium "Premium" "Free")
+        readability-score chars-count words-count
+        score
+        (lsp-grammarly--scale-100 clarity)
+        (lsp-grammarly--scale-100 tone)
+        (lsp-grammarly--scale-100 correctness)
+        (lsp-grammarly--scale-100 general-score)
+        (lsp-grammarly--scale-100 engagement))))))
 
 (provide 'lsp-grammarly)
 ;;; lsp-grammarly.el ends here
