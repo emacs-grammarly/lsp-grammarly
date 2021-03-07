@@ -41,6 +41,13 @@ Link: https://github.com/znck/grammarly"
   :group 'lsp-mode
   :link '(url-link "https://github.com/emacs-grammarly/lsp-grammarly"))
 
+(defcustom lsp-grammarly-server-path nil
+  "Path points for Grammarly LSP.
+
+This is only for development use."
+  :type 'string
+  :group 'lsp-grammarly)
+
 (defcustom lsp-grammarly-modes '(text-mode latex-mode org-mode markdown-mode)
   "List of major mode that work with Grammarly."
   :type 'list
@@ -98,7 +105,9 @@ Link: https://github.com/znck/grammarly"
 
 (defun lsp-grammarly--server-command ()
   "Generate startup command for Grammarly language server."
-  (list (lsp-package-path 'grammarly-ls) "--stdio"))
+  (or (and lsp-grammarly-server-path
+           (list lsp-grammarly-server-path "--stdio"))
+      (list (lsp-package-path 'grammarly-ls) "--stdio")))
 
 (lsp-register-custom-settings
  '(("grammarly.autoActivate" lsp-grammarly-auto-activate t)
