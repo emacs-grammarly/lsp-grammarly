@@ -136,31 +136,26 @@ This is only for development use."
 (defvar lsp-grammarly--password ""
   "Encrypted password in alist.")
 
-(defvar lsp-grammarly--token nil)
-
-(defun lsp-grammarly--get-credentials (_workspace _uri callback &rest _)
+(defun lsp-grammarly--get-credentials (_workspace _uri _callback &rest _)
   ""
-  (message "\f")
-  (message ">>> [get-credentials]:")
-  (message "╘[TL] 1: %s" (type-of _workspace))
-  (message "╘[TL] 2: %s" (ht-keys uri))
+  ;; TODO: ..
   )
 
 (defun lsp-grammarly--get-token (_workspace _uri callback &rest _)
   "Return token from from variable `lsp-grammarly--password'."
   (funcall callback lsp-grammarly--password))
 
-(defun lsp-grammarly--store-token (_workspace _uri callback &rest _)
+(defun lsp-grammarly--store-token (_workspace _uri _callback &rest _)
   ""
   ;; TODO: ..
   )
 
-(defun lsp-grammarly--show-error (_workspace _uri callback &rest _)
+(defun lsp-grammarly--show-error (_workspace _uri _callback &rest _)
   ""
   ;; TODO: ..
   )
 
-(defun lsp-grammarly--update-document-state (_workspace _uri callback &rest _)
+(defun lsp-grammarly--update-document-state (_workspace _uri _callback &rest _)
   ""
   ;; TODO: ..
   )
@@ -224,11 +219,12 @@ This is only for development use."
                         (lsp-package-ensure 'grammarly-ls callback error-callback))
   :after-open-fn #'lsp-grammarly--init
   :async-request-handlers
-  (ht ("$/getCredentials" #'lsp-grammarly--get-credentials)
-      ("$/getToken" #'lsp-grammarly--get-token)
-      ("$/storeToken" #'lsp-grammarly--store-token)
-      ("$/showError" #'lsp-grammarly--show-error)
-      ("$/updateDocumentState" #'lsp-grammarly--update-document-state))))
+  (ht ;;("$/getCredentials" #'lsp-grammarly--get-credentials)
+   ("$/getToken" #'lsp-grammarly--get-token)
+   ;;("$/storeToken" #'lsp-grammarly--store-token)
+   ;;("$/showError" #'lsp-grammarly--show-error)
+   ;;("$/updateDocumentState" #'lsp-grammarly--update-document-state)
+   )))
 
 
 ;;
