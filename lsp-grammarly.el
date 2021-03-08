@@ -138,33 +138,29 @@ This is only for development use."
 
 (defvar lsp-grammarly--token nil)
 
-(defun lsp-grammarly--get-credentials (_workspace uri &rest _)
+(defun lsp-grammarly--get-credentials (_workspace _uri callback &rest _)
   ""
   (message "\f")
   (message ">>> [get-credentials]:")
   (message "╘[TL] 1: %s" (type-of _workspace))
   (message "╘[TL] 2: %s" (ht-keys uri))
-  nil)
+  )
 
-(defun lsp-grammarly--get-token (_workspace uri &rest _)
-  ""
-  (message "\f")
-  (message ">>> [get-token]:")
-  (message "╘[TL] 1: %s" (type-of _workspace))
-  ;;(message "╘[TL] 2: %s" (ht-keys uri))
-  lsp-grammarly--password-string)
+(defun lsp-grammarly--get-token (_workspace _uri callback &rest _)
+  "Return token from from variable `lsp-grammarly--password'."
+  (funcall callback lsp-grammarly--password))
 
-(defun lsp-grammarly--store-token (_workspace uri &rest _)
+(defun lsp-grammarly--store-token (_workspace _uri callback &rest _)
   ""
   ;; TODO: ..
   )
 
-(defun lsp-grammarly--show-error (_workspace uri &rest _)
+(defun lsp-grammarly--show-error (_workspace _uri callback &rest _)
   ""
   ;; TODO: ..
   )
 
-(defun lsp-grammarly--update-document-state (_workspace uri &rest _)
+(defun lsp-grammarly--update-document-state (_workspace _uri callback &rest _)
   ""
   ;; TODO: ..
   )
