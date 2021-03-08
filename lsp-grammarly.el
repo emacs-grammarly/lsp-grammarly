@@ -7,7 +7,7 @@
 ;; Description: LSP Clients for Grammarly.
 ;; Keyword: lsp grammarly checker
 ;; Version: 0.1.1
-;; Package-Requires: ((emacs "24.3") (lsp-mode "6.1") (ht "2.3"))
+;; Package-Requires: ((emacs "24.3") (lsp-mode "6.1") (s "1.12.0") (ht "2.3"))
 ;; URL: https://github.com/emacs-grammarly/lsp-grammarly
 
 ;; This file is NOT part of GNU Emacs.
@@ -33,7 +33,9 @@
 ;;; Code:
 
 (require 'lsp-mode)
+(require 's)
 (require 'ht)
+(require 'json)
 
 (defgroup lsp-grammarly nil
   "Settings for the Grammarly Language Server.
@@ -113,6 +115,84 @@ This is only for development use."
   "Convert SCORE to the scale of 100 instead of scale of 1."
   (* score 100))
 
+(defun lsp-grammarly--username ()
+  "Return the currently login username."
+  (when lsp-grammarly--password
+    (cdr (assoc 'username lsp-grammarly--password))))
+
+;;
+;; (@* "Login" )
+;;
+
+(defconst lsp-grammarly--account "default"
+  "Key that Grammarly LSP default to.")
+
+(defconst lsp-grammarly--cookie-key "vscode-grammarly-cookie"
+  "Key to store credentials.")
+
+(defvar lsp-grammarly--password-string ""
+  "Encrypted password in string.")
+
+(defvar lsp-grammarly--password ""
+  "Encrypted password in alist.")
+
+(defvar lsp-grammarly--token nil)
+
+(defun lsp-grammarly--get-credentials (_workspace uri &rest _)
+  ""
+  (message "\f")
+  (message ">>> [get-credentials]:")
+  (message "╘[TL] 1: %s" (type-of _workspace))
+  (message "╘[TL] 2: %s" (ht-keys uri))
+  nil)
+
+(defun lsp-grammarly--get-token (_workspace uri &rest _)
+  ""
+  (message "\f")
+  (message ">>> [get-token]:")
+  (message "╘[TL] 1: %s" (type-of _workspace))
+  ;;(message "╘[TL] 2: %s" (ht-keys uri))
+  lsp-grammarly--password-string)
+
+(defun lsp-grammarly--store-token (_workspace uri &rest _)
+  ""
+  ;; TODO: ..
+  )
+
+(defun lsp-grammarly--show-error (_workspace uri &rest _)
+  ""
+  ;; TODO: ..
+  )
+
+(defun lsp-grammarly--update-document-state (_workspace uri &rest _)
+  ""
+  ;; TODO: ..
+  )
+
+(defun lsp-grammarly--init (&rest _)
+  "Get Grammarly API ready."
+  (setq lsp-grammarly--password-string nil
+        lsp-grammarly--password nil)
+  (let ((cookie (shell-command-to-string (format "keytar find %s" lsp-grammarly--cookie-key)))
+        lines)
+    (when (and (stringp cookie)
+               (string-match-p "account:" cookie) (string-match-p "password:" cookie)
+               (string-match-p "default" cookie))
+      (setq lines (split-string cookie "\n"))
+      (setq pass (nth 3 lines)
+            pass (s-replace "password:" "" pass)
+            pass (s-replace "'" "" pass)
+            pass (string-trim pass))
+      (setq lsp-grammarly--password-string pass
+            lsp-grammarly--password (ignore-errors (json-read-from-string pass)))))
+  (when lsp-grammarly--password
+    (message "Logged in as %s" (lsp-grammarly--username))))
+
+(defun lsp-grammarly--login ()
+  "Login to Grammarly.com."
+  ;; TODO: ..
+  )
+
 ;;
 ;; (@* "Server" )
 ;;
@@ -145,7 +225,15 @@ This is only for development use."
   :priority -1
   :server-id 'grammarly-ls
   :download-server-fn (lambda (_client callback error-callback _update?)
-                        (lsp-package-ensure 'grammarly-ls callback error-callback))))
+                        (lsp-package-ensure 'grammarly-ls callback error-callback))
+  :after-open-fn #'lsp-grammarly--init
+  :async-request-handlers
+  (ht ("$/getCredentials" #'lsp-grammarly--get-credentials)
+      ("$/getToken" #'lsp-grammarly--get-token)
+      ("$/storeToken" #'lsp-grammarly--store-token)
+      ("$/showError" #'lsp-grammarly--show-error)
+      ("$/updateDocumentState" #'lsp-grammarly--update-document-state))))
+
 
 ;;
 ;; (@* "Commands" )
@@ -163,7 +251,7 @@ This is only for development use."
   (interactive)
   (lsp-request-async
    "$/stop" `(:uri ,(lsp--buffer-uri))
-   (lambda (_) (message "Stop checking..."))))
+   (lambda (_) (message "Stop Grammarly checker..."))))
 
 (defun lsp-grammarly-get-document-state ()
   "Return document state."
