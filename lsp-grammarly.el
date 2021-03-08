@@ -107,6 +107,18 @@ This is only for development use."
   :type 'list
   :group 'lsp-grammarly)
 
+(defconst lsp-grammarly--cookie-key "vscode-grammarly-cookie"
+  "Key to store credentials.")
+
+(defconst lsp-grammarly--account "default"
+  "Key that Grammarly LSP default to.")
+
+(defvar lsp-grammarly--password-string nil
+  "Encrypted password in string.")
+
+(defvar lsp-grammarly--password nil
+  "Encrypted password in alist.")
+
 ;;
 ;; (@* "Util" )
 ;;
@@ -115,57 +127,53 @@ This is only for development use."
   "Convert SCORE to the scale of 100 instead of scale of 1."
   (* score 100))
 
+(defun lsp-grammarly--random-bytes (n)
+  "Return random bytes up to N."
+  (let* ((charset "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
+         (baseCount (length charset)))
+    (with-temp-buffer
+      (dotimes (_ n) (insert (elt charset (random baseCount))))
+      (buffer-string))))
+
 (defun lsp-grammarly--username ()
   "Return the currently login username."
   (when lsp-grammarly--password
-    (cdr (assoc 'username lsp-grammarly--password))))
+    (or (ignore-errors (cdr (assoc 'username lsp-grammarly--password)))
+        (ignore-errors (ht-get lsp-grammarly--password "username")))))
+
+;;
+;; (@* "keytar" )
+;;
+
+(defun lsp-grammarly--keytar-find ()
+  "Find the credentials."
+  (shell-command-to-string (format "keytar find %s" lsp-grammarly--cookie-key)))
+
+(defun lsp-grammarly--keytar-set ()
+  "Set the credentials."
+  (shell-command (format "keytar set -s %s -a %s -p %s"
+                         lsp-grammarly--cookie-key lsp-grammarly--account
+                         lsp-grammarly--password-string)))
 
 ;;
 ;; (@* "Login" )
 ;;
 
-(defconst lsp-grammarly--account "default"
-  "Key that Grammarly LSP default to.")
-
-(defconst lsp-grammarly--cookie-key "vscode-grammarly-cookie"
-  "Key to store credentials.")
-
-(defvar lsp-grammarly--password-string ""
-  "Encrypted password in string.")
-
-(defvar lsp-grammarly--password ""
-  "Encrypted password in alist.")
-
-(defun lsp-grammarly--get-credentials (_workspace _uri _callback &rest _)
-  ""
-  ;; TODO: ..
-  )
-
 (defun lsp-grammarly--get-token (_workspace _uri callback &rest _)
-  "Return token from from variable `lsp-grammarly--password'."
+  "Return the token from variable `lsp-grammarly--password'.
+
+For argument CALLBACK, see object `lsp--client' description."
   (funcall callback lsp-grammarly--password))
 
 (defun lsp-grammarly--store-token (_workspace _uri _callback &rest _)
-  ""
-  ;; TODO: ..
-  )
-
-(defun lsp-grammarly--show-error (_workspace _uri _callback &rest _)
-  ""
-  ;; TODO: ..
-  )
-
-(defun lsp-grammarly--update-document-state (_workspace _uri _callback &rest _)
-  ""
-  ;; TODO: ..
-  )
+  "Save the token once."
+  (lsp-grammarly--keytar-set))
 
 (defun lsp-grammarly--init (&rest _)
   "Get Grammarly API ready."
   (setq lsp-grammarly--password-string nil
         lsp-grammarly--password nil)
-  (let ((cookie (shell-command-to-string (format "keytar find %s" lsp-grammarly--cookie-key)))
-        lines)
+  (let ((cookie (lsp-grammarly--keytar-find)) lines)
     (when (and (stringp cookie)
                (string-match-p "account:" cookie) (string-match-p "password:" cookie)
                (string-match-p "default" cookie))
@@ -176,17 +184,17 @@ This is only for development use."
             pass (string-trim pass))
       (setq lsp-grammarly--password-string pass
             lsp-grammarly--password (ignore-errors (json-read-from-string pass)))))
-  (when lsp-grammarly--password
-    (message "Logged in as %s" (lsp-grammarly--username))))
-
-(defun lsp-grammarly--login ()
-  "Login to Grammarly.com."
-  ;; TODO: ..
-  )
+  (if lsp-grammarly--password
+      (message "Logged in as, %s" (lsp-grammarly--username))
+    (message "Visited as, anonymous")))
 
 ;;
 ;; (@* "Server" )
 ;;
+
+(defun lsp-grammarly--resolve-uri (uri)
+  ""
+  (message ">>>> resolve"))
 
 (defun lsp-grammarly--server-command ()
   "Generate startup command for Grammarly language server."
@@ -218,14 +226,10 @@ This is only for development use."
   :download-server-fn (lambda (_client callback error-callback _update?)
                         (lsp-package-ensure 'grammarly-ls callback error-callback))
   :after-open-fn #'lsp-grammarly--init
+  :uri-handlers (ht ("emacs-grammarly" #'lsp-grammarly--resolve-uri))
   :async-request-handlers
-  (ht ;;("$/getCredentials" #'lsp-grammarly--get-credentials)
-   ("$/getToken" #'lsp-grammarly--get-token)
-   ;;("$/storeToken" #'lsp-grammarly--store-token)
-   ;;("$/showError" #'lsp-grammarly--show-error)
-   ;;("$/updateDocumentState" #'lsp-grammarly--update-document-state)
-   )))
-
+  (ht ("$/getToken" #'lsp-grammarly--get-token)
+      ("$/storeToken" #'lsp-grammarly--store-token))))
 
 ;;
 ;; (@* "Commands" )
@@ -279,6 +283,29 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
         (lsp-grammarly--scale-100 correctness)
         (lsp-grammarly--scale-100 general-score)
         (lsp-grammarly--scale-100 engagement))))))
+
+(defun lsp-grammarly-login ()
+  "Login to Grammarly.com."
+  (interactive)
+  (if lsp-grammarly--password
+      (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
+    (message "[INFO] Please use VSCode to do the login")
+    (let* ((code-verifier (base64-encode-string (lsp-grammarly--random-bytes 94)))
+           (challenge (base64-encode-string (secure-hash 'sha256 code-verifier))))
+      (browse-url
+       (format
+        "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
+        "emacs-grammarly"
+        challenge))
+      )
+    (let* ((username "mike316mike316@yahoo.com.tw")
+           (token "grauth=AABJBhIdZbfzDTcJb7Yc6ayWyn-DNZUGjREs1J2Nl0wM9Qqx8LZZGMFbI9uDv8fHZ6T0nrQZ0khWOfTr; csrf-token=AABJBu7EvUBMxXGvtFQT9QJQss9tMoOXukhgjg; tdi=vgopt3pe6cbr3x8g;")
+           (authInfo `((isAnonymous . :json-false)
+                       (isPremium . t)
+                       (token . ,token)
+                       (username . ,username))))
+      )
+    ))
 
 (provide 'lsp-grammarly)
 ;;; lsp-grammarly.el ends here
