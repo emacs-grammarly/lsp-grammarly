@@ -352,7 +352,9 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
     (let ((challenge (base64-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t))))
       (browse-url (format
                    "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
-                   lsp-grammarly-uri challenge)))))
+                   lsp-grammarly-uri challenge)))
+    ;; TODO: Trigger time out event here..
+    ))
 
 (provide 'lsp-grammarly)
 ;;; lsp-grammarly.el ends here
