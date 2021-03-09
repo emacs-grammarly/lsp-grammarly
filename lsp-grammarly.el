@@ -143,14 +143,6 @@ This is only for development use."
         (ignore-errors (ht-get lsp-grammarly--password "username")))))
 
 ;;
-;; (@* "keytar" )
-;;
-
-(defun lsp-grammarly--keytar-find ()
-  "Find the credentials."
-  (shell-command-to-string (format "keytar find %s" lsp-grammarly--cookie-key)))
-
-;;
 ;; (@* "Login" )
 ;;
 
@@ -169,15 +161,8 @@ For argument CALLBACK, see object `lsp--client' description."
   "Get Grammarly API ready."
   (setq lsp-grammarly--password-string nil
         lsp-grammarly--password nil)
-  (let ((cookie (lsp-grammarly--keytar-find)) lines)
-    (when (and (stringp cookie)
-               (string-match-p "account:" cookie) (string-match-p "password:" cookie)
-               (string-match-p "default" cookie))
-      (setq lines (split-string cookie "\n"))
-      (setq pass (nth 3 lines)
-            pass (s-replace "password:" "" pass)
-            pass (s-replace "'" "" pass)
-            pass (string-trim pass))
+  (let ((pass (keytar-get-password lsp-grammarly--cookie-key lsp-grammarly--account)))
+    (when pass
       (setq lsp-grammarly--password-string pass
             lsp-grammarly--password (ignore-errors (json-read-from-string pass)))))
   (if lsp-grammarly--password
