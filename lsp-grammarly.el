@@ -289,8 +289,9 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
 (defvar lsp-grammarly--challenge nil "Login information, challenge.")
 
 (defun lsp-grammarly--uri-callback (code)
-  ""
-  (interactive)  ; TODO: remove this
+  "Callback after resolving URI.
+
+Argument CODE is the query string from URI."
   (request
     (format "https://auth.grammarly.com/v3/user/oranonymous?app=%s" lsp-grammarly-uri)
     :type "GET"
