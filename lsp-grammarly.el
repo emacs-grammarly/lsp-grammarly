@@ -186,8 +186,10 @@ For argument CALLBACK, see object `lsp--client' description."
 (defun lsp-grammarly--resolve-uri (uri)
   "Handle URI for authentication."
   (message ">>>> resolve: %s" uri)
-  (let ((path (lsp--uri-to-path uri)))
-    (when (string= path "/auth/callbaack")
+  (let ((path (lsp--uri-to-path uri))
+        code)
+    (when (string= path "/auth/callback")
+      (lsp-grammarly--uri-callback code)
       )
     ))
 
@@ -283,10 +285,10 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
 ;; (@* "Login" )
 ;;
 
-(defvar lsp-grammarly--code-verifier nil
-  "")
+(defvar lsp-grammarly--code-verifier nil "Login information, code verifier.")
+(defvar lsp-grammarly--challenge nil "Login information, challenge.")
 
-(defun lsp-grammarly--get-cookie ()
+(defun lsp-grammarly--uri-callback (code)
   ""
   (interactive)  ; TODO: remove this
   (request
@@ -317,7 +319,7 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
          :data
          (json-encode
           `(("client_id" . ,lsp-grammarly-uri)
-            ("code" . "uVtPgpbx7RNLQ42RQchie9Ne37ilUy7iZrM3QPehyjNvp3C95zjaCgXHfQeWmkiIeDH7uANIyqDQE8lkVMvkaupWMjrlRaFDRZLEjic9AI9Hfb2ykvvntFVl5H2qAD9L")
+            ("code" . ,code)
             ("code_verifier" . ,lsp-grammarly--code-verifier)))
          :success
          (cl-function
@@ -348,13 +350,11 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
   ;;(if lsp-grammarly--password
   (if (not lsp-grammarly--password)  ; TODO: remove this
       (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
-    (setq lsp-grammarly--code-verifier (base64-encode-string (lsp-grammarly--random-bytes 94)))
-    (let ((challenge (base64-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t))))
-      (browse-url (format
-                   "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
-                   lsp-grammarly-uri challenge)))
-    ;; TODO: Trigger time out event here..
-    ))
+    (setq lsp-grammarly--code-verifier (base64-encode-string (lsp-grammarly--random-bytes 94))
+          lsp-grammarly--challenge (base64-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t)))
+    (browse-url (format
+                 "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
+                 lsp-grammarly-uri lsp-grammarly--challenge))))
 
 (provide 'lsp-grammarly)
 ;;; lsp-grammarly.el ends here
