@@ -150,12 +150,6 @@ This is only for development use."
   "Find the credentials."
   (shell-command-to-string (format "keytar find %s" lsp-grammarly--cookie-key)))
 
-(defun lsp-grammarly--keytar-set ()
-  "Set the credentials."
-  (shell-command (format "keytar set -s %s -a %s -p %s"
-                         lsp-grammarly--cookie-key lsp-grammarly--account
-                         lsp-grammarly--password-string)))
-
 ;;
 ;; (@* "Login" )
 ;;
@@ -168,7 +162,8 @@ For argument CALLBACK, see object `lsp--client' description."
 
 (defun lsp-grammarly--store-token (_workspace _uri _callback &rest _)
   "Save the token once."
-  (lsp-grammarly--keytar-set))
+  (keytar-set-password
+   lsp-grammarly--cookie-key lsp-grammarly--account lsp-grammarly--password-string))
 
 (defun lsp-grammarly--init (&rest _)
   "Get Grammarly API ready."
