@@ -317,7 +317,7 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
          :data
          (json-encode
           `(("client_id" . ,lsp-grammarly-uri)
-            ;;("code" . ,data)
+            ("code" . "uVtPgpbx7RNLQ42RQchie9Ne37ilUy7iZrM3QPehyjNvp3C95zjaCgXHfQeWmkiIeDH7uANIyqDQE8lkVMvkaupWMjrlRaFDRZLEjic9AI9Hfb2ykvvntFVl5H2qAD9L")
             ("code_verifier" . ,lsp-grammarly--code-verifier)))
          :success
          (cl-function
