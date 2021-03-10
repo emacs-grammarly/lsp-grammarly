@@ -357,5 +357,16 @@ Argument CODE is the query string from URI."
                  "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
                  lsp-grammarly-uri lsp-grammarly--challenge))))
 
+(defun lsp-grammarly-logout ()
+  "Logout from Grammarly.com."
+  (interactive)
+  (if (not lsp-grammarly--password)
+      (message "[INFO] You are already logout from Grammarly.com")
+    (setq lsp-grammarly--password nil
+          lsp-grammarly--password-string nil)
+    (if (keytar-delete-password lsp-grammarly--cookie-key lsp-grammarly--account)
+        (message "[INFO] Logged out of Grammarly.com.")
+      (message "[ERROR] Failed to logout from Grammarly.com"))))
+
 (provide 'lsp-grammarly)
 ;;; lsp-grammarly.el ends here
