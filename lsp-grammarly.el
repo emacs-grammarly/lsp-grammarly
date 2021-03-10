@@ -295,7 +295,8 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
 
 Argument CODE is the query string from URI."
   (let* ((uri (read-string "[Grammarly Authentication] code: "))
-         (code (lsp-grammarly--resolve-uri uri)))
+         (code (lsp-grammarly--resolve-uri uri))
+         csrf-token grauth gnar-containerId)
     (request
       (format "https://auth.grammarly.com/v3/user/oranonymous?app=%s" lsp-grammarly-client-id)
       :type "GET"
@@ -306,10 +307,13 @@ Argument CODE is the query string from URI."
       (cl-function
        (lambda (&key _response _data &allow-other-keys)
          (grammarly--form-cookie)
+         (setq csrf-token (grammarly--get-cookie-by-name "csrf-token")
+               grauth (grammarly--get-cookie-by-name "grauth")
+               gnar-containerId (grammarly--get-cookie-by-name "gnar_containerId"))
          (message "╘[TL] code: %s" code)
-         (message "╘[TL] csrf-token: %s" (grammarly--get-cookie-by-name "csrf-token"))
-         (message "╘[TL] gnar_containerId: %s" (grammarly--get-cookie-by-name "gnar_containerId"))
-         (message "╘[TL] grauth: %s" (grammarly--get-cookie-by-name "grauth"))
+         (message "╘[TL] csrf-token: %s" csrf-token)
+         (message "╘[TL] gnar_containerId: %s" gnar-containerId)
+         (message "╘[TL] grauth: %s" grauth)
          (request
            "https://auth.grammarly.com/v3/api/unified-login/code/exchange"
            :type "POST"
@@ -318,11 +322,9 @@ Argument CODE is the query string from URI."
              ("Context-Type" . "application/json")
              ("x-client-type" . ,lsp-grammarly-client-id)
              ("x-client-version" . "0.0.0")
-             ("x-csrf-token" . ,(grammarly--get-cookie-by-name "csrf-token"))
-             ("x-container-id" . ,(grammarly--get-cookie-by-name "gnar_containerId"))
-             ("cookie" . (format "grauth=%s; csrf-token=%s"
-                                 (grammarly--get-cookie-by-name "grauth")
-                                 (grammarly--get-cookie-by-name "csrf-token"))))
+             ("x-csrf-token" . ,csrf-token)
+             ("x-container-id" . ,gnar-containerId)
+             ("cookie" . ,(format "grauth=%s; csrf-token=%s" grauth csrf-token)))
            :data
            (json-encode
             `(("client_id" . ,lsp-grammarly-client-id)
