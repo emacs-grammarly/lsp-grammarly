@@ -184,18 +184,6 @@ For argument CALLBACK, see object `lsp--client' description."
 ;; (@* "Server" )
 ;;
 
-(defconst lsp-grammarly-client-id "extensionVSCode"
-  "Key for URI scheme.")
-
-(defun lsp-grammarly--resolve-uri (uri)
-  "Handle URI for authentication."
-  (let ((prefix "vscode://znck.grammarly/auth/callback?") query)
-    (if (not (string-prefix-p prefix uri))
-        (message "[WARNING] An URL should start with prefix: %s" prefix)
-      (setq uri (s-replace prefix "" uri)
-            query (url-parse-query-string uri))
-      (nth 1 (assoc "code" query)))))
-
 (defun lsp-grammarly--server-command ()
   "Generate startup command for Grammarly language server."
   (or (and lsp-grammarly-server-path
@@ -289,6 +277,18 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
 
 (defvar lsp-grammarly--code-verifier nil "Login information, code verifier.")
 (defvar lsp-grammarly--challenge nil "Login information, challenge.")
+
+(defconst lsp-grammarly-client-id "extensionVSCode"
+  "Key for URI scheme.")
+
+(defun lsp-grammarly--resolve-uri (uri)
+  "Handle URI for authentication."
+  (let ((prefix "vscode://znck.grammarly/auth/callback?") query)
+    (if (not (string-prefix-p prefix uri))
+        (message "[WARNING] An URL should start with prefix: %s" prefix)
+      (setq uri (s-replace prefix "" uri)
+            query (url-parse-query-string uri))
+      (nth 1 (assoc "code" query)))))
 
 (defun lsp-grammarly--uri-callback ()
   "Callback after resolving URI.
