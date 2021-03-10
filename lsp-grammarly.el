@@ -377,6 +377,7 @@ Argument CODE is the query string from URI."
   (interactive)
   (if (lsp-grammarly-login-p)
       (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
+    ;; TODO: This isn't working!!
     (setq lsp-grammarly--code-verifier "mhvVSnS0etmdWjEb7EtYY6vlB6bNVh20yd444AXTmjdvmJfRvojWxI6_6aJBAL4Oq7YTH57nzKL1tcQmHksvnxFzwGXM-R_lwqsOsnoY8ZWJkWlwhUeSI4c-rSd2hdYF"
           ;;(base64-encode-string (lsp-grammarly--random-bytes 96))
           lsp-grammarly--challenge "FFFRpovg5iYVLyoXJrwqcyPZbtLP3rRNeMrtqlK4_dc"
