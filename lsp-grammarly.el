@@ -183,7 +183,7 @@ For argument CALLBACK, see object `lsp--client' description."
 ;; (@* "Server" )
 ;;
 
-(defconst lsp-grammarly-uri "emacs-grammarly"
+(defconst lsp-grammarly-uri "extensionEmacs"
   "Key for URI scheme.")
 
 (defun lsp-grammarly--resolve-uri (uri)
@@ -226,7 +226,6 @@ For argument CALLBACK, see object `lsp--client' description."
   :download-server-fn (lambda (_client callback error-callback _update?)
                         (lsp-package-ensure 'grammarly-ls callback error-callback))
   :after-open-fn #'lsp-grammarly--init
-  :uri-handlers (ht (lsp-grammarly-uri #'lsp-grammarly--resolve-uri))
   :async-request-handlers
   (ht ("$/getToken" #'lsp-grammarly--get-token)
       ("$/storeToken" #'lsp-grammarly--store-token))))
