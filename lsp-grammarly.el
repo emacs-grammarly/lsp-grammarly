@@ -159,6 +159,10 @@ This is only for development use."
 For argument CALLBACK, see object `lsp--client' description."
   (funcall callback lsp-grammarly--password))
 
+(defun lsp-grammarly-login-p ()
+  "Return non-nil if currently logged in to Grammarly.com."
+  lsp-grammarly--password)
+
 (defun lsp-grammarly--store-token (_workspace _uri _callback &rest _)
   "Save the token once."
   (keytar-set-password
@@ -166,15 +170,14 @@ For argument CALLBACK, see object `lsp--client' description."
 
 (defun lsp-grammarly--init (&rest _)
   "Get Grammarly API ready."
-  (setq lsp-grammarly--password-string nil
-        lsp-grammarly--password nil)
-  (let ((pass (keytar-get-password lsp-grammarly--cookie-key lsp-grammarly--account)))
-    (when pass
-      (setq lsp-grammarly--password-string pass
-            lsp-grammarly--password (ignore-errors (json-read-from-string pass)))))
-  (if lsp-grammarly--password
-      (message "Logged in as, %s" (lsp-grammarly--username))
-    (message "Visited as, anonymous")))
+  (unless (lsp-grammarly-login-p)
+    (let ((pass (keytar-get-password lsp-grammarly--cookie-key lsp-grammarly--account)))
+      (when pass
+        (setq lsp-grammarly--password-string pass
+              lsp-grammarly--password (ignore-errors (json-read-from-string pass)))))
+    (if (lsp-grammarly-login-p)
+        (message "[INFO] Logged in as, %s" (lsp-grammarly--username))
+      (message "[INFO] Visited as, anonymous"))))
 
 ;;
 ;; (@* "Server" )
@@ -348,8 +351,8 @@ Argument CODE is the query string from URI."
 (defun lsp-grammarly-login ()
   "Login to Grammarly.com."
   (interactive)
-  ;;(if lsp-grammarly--password
-  (if (not lsp-grammarly--password)  ; TODO: remove this
+  ;;(if (lsp-grammarly-login-p)
+  (if (not (lsp-grammarly-login-p))  ; TODO: remove this
       (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
     (setq lsp-grammarly--code-verifier (base64-encode-string (lsp-grammarly--random-bytes 94))
           lsp-grammarly--challenge (base64-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t)))
@@ -360,12 +363,13 @@ Argument CODE is the query string from URI."
 (defun lsp-grammarly-logout ()
   "Logout from Grammarly.com."
   (interactive)
-  (if (not lsp-grammarly--password)
+  (if (not (lsp-grammarly-login-p))
       (message "[INFO] You are already logout from Grammarly.com")
-    (setq lsp-grammarly--password nil
-          lsp-grammarly--password-string nil)
     (if (keytar-delete-password lsp-grammarly--cookie-key lsp-grammarly--account)
-        (message "[INFO] Logged out of Grammarly.com.")
+        (progn
+          (setq lsp-grammarly--password nil
+                lsp-grammarly--password-string nil)
+          (message "[INFO] Logged out of Grammarly.com."))
       (message "[ERROR] Failed to logout from Grammarly.com"))))
 
 (provide 'lsp-grammarly)
