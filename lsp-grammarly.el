@@ -320,7 +320,7 @@ Argument CODE is the query string from URI."
            :type "POST"
            :headers
            `(("Accept" . "application/json")
-             ("Context-Type" . "application/json")
+             ("Content-Type" . "application/json")
              ("x-client-type" . ,lsp-grammarly-client-id)
              ("x-client-version" . "0.0.0")
              ("x-csrf-token" . ,csrf-token)
