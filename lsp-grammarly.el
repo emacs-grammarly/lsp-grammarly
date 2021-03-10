@@ -7,7 +7,7 @@
 ;; Description: LSP Clients for Grammarly.
 ;; Keyword: lsp grammarly checker
 ;; Version: 0.2.0
-;; Package-Requires: ((emacs "24.3") (lsp-mode "6.1") (keytar "0.1.1") (request "0.3.0") (s "1.12.0") (ht "2.3"))
+;; Package-Requires: ((emacs "24.3") (lsp-mode "6.1") (grammarly "0.3.0") (keytar "0.1.1") (request "0.3.0") (s "1.12.0") (ht "2.3"))
 ;; URL: https://github.com/emacs-grammarly/lsp-grammarly
 
 ;; This file is NOT part of GNU Emacs.
@@ -33,6 +33,7 @@
 ;;; Code:
 
 (require 'lsp-mode)
+(require 'grammarly)
 (require 'keytar)
 (require 'request)
 (require 's)
@@ -138,6 +139,10 @@ This is only for development use."
     (or (ignore-errors (cdr (assoc 'username lsp-grammarly--password)))
         (ignore-errors (ht-get lsp-grammarly--password "username")))))
 
+(defun lsp-grammarly--json-encode (obj)
+  "Wrap function `json-encode' to convert OBJ for keytar password."
+  (s-replace "\"" "\\\"" (json-encode obj)))
+
 ;;
 ;; (@* "Login" )
 ;;
@@ -154,15 +159,16 @@ This is only for development use."
 (defvar lsp-grammarly--password nil
   "Encrypted password in alist.")
 
+(defun lsp-grammarly-login-p ()
+  "Return non-nil if currently logged in to Grammarly.com."
+  lsp-grammarly--password)
+
 (defun lsp-grammarly--get-token (_workspace _uri callback &rest _)
   "Return the token from variable `lsp-grammarly--password'.
 
 For argument CALLBACK, see object `lsp--client' description."
+  (message "╘[TL] lsp-grammarly--password: %s" lsp-grammarly--password)
   (funcall callback lsp-grammarly--password))
-
-(defun lsp-grammarly-login-p ()
-  "Return non-nil if currently logged in to Grammarly.com."
-  lsp-grammarly--password)
 
 (defun lsp-grammarly--store-token (_workspace _uri _callback &rest _)
   "Save the token once."
@@ -290,13 +296,21 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
             query (url-parse-query-string uri))
       (nth 1 (assoc "code" query)))))
 
+(defun lsp-grammarly--update-cookie ()
+  "Refresh the Grammarly.com cookie once."
+  (grammarly--form-cookie)
+  `((csrf-token . ,(grammarly--get-cookie-by-name "csrf-token"))
+    (grauth . ,(grammarly--get-cookie-by-name "grauth"))
+    (gnar-containerId . ,(grammarly--get-cookie-by-name "gnar_containerId"))
+    (tdi . ,(grammarly--get-cookie-by-name "tdi"))))
+
 (defun lsp-grammarly--uri-callback ()
   "Callback after resolving URI.
 
 Argument CODE is the query string from URI."
   (let* ((uri (read-string "[Grammarly Authentication] code: "))
          (code (lsp-grammarly--resolve-uri uri))
-         csrf-token grauth gnar-containerId)
+         cookie csrf-token grauth gnar-containerId)
     (request
       (format "https://auth.grammarly.com/v3/user/oranonymous?app=%s" lsp-grammarly-client-id)
       :type "GET"
@@ -306,15 +320,10 @@ Argument CODE is the query string from URI."
       :success
       (cl-function
        (lambda (&key _response _data &allow-other-keys)
-         (grammarly--form-cookie)
-         (setq csrf-token (grammarly--get-cookie-by-name "csrf-token")
-               grauth (grammarly--get-cookie-by-name "grauth")
-               gnar-containerId (grammarly--get-cookie-by-name "gnar_containerId"))
-         (message "╘[TL] code: %s" code)
-         (message "╘[TL] code-verifier: %s" lsp-grammarly--code-verifier)
-         (message "╘[TL] csrf-token: %s" csrf-token)
-         (message "╘[TL] gnar_containerId: %s" gnar-containerId)
-         (message "╘[TL] grauth: %s" grauth)
+         (setq cookie (lsp-grammarly--update-cookie)
+               csrf-token (cdr (assoc 'csrf-token cookie))
+               grauth (cdr (assoc 'grauth cookie))
+               gnar-containerId (cdr (assoc 'gnar-containerId cookie)))
          (request
            "https://auth.grammarly.com/v3/api/unified-login/code/exchange"
            :type "POST"
@@ -334,18 +343,26 @@ Argument CODE is the query string from URI."
            :success
            (cl-function
             (lambda (&key _response data &allow-other-keys)
-              (message "success!!")
-              (let* ((user (json-read-from-string data))
-                     (username "N/A")
-                     (email "user@example.com")
-                     (token "grauth=AABJBhIdZbfzDTcJb7Yc6ayWyn-DNZUGjREs1J2Nl0wM9Qqx8LZZGMFbI9uDv8fHZ6T0nrQZ0khWOfTr; csrf-token=AABJBu7EvUBMxXGvtFQT9QJQss9tMoOXukhgjg; tdi=vgopt3pe6cbr3x8g;")
-                     (authInfo `((isAnonymous . :json-false)
-                                 (isPremium . t)
-                                 (token . ,token)
-                                 (username . ,email))))
-                ;; TODO: ..
-                (message "[INFO] Logged in as `%s`" username)
-                )))
+              (setq cookie (lsp-grammarly--update-cookie)
+                    csrf-token (cdr (assoc 'csrf-token cookie))
+                    grauth (cdr (assoc 'grauth cookie))
+                    gnar-containerId (cdr (assoc 'gnar-containerId cookie))
+                    tdi (cdr (assoc 'tdi cookie)))
+              (let* ((all-data (json-read-from-string data))
+                     (user (nth 0 all-data))
+                     (premium (string= "Premium" (cdr (assoc 'type user))))
+                     (name (cdr (assoc 'name user)))
+                     (email (cdr (assoc 'email user)))
+                     (token (format "grauth=%s;csrf-token=%s;tdi=%s;" grauth csrf-token tdi))
+                     (auth-info `(("isAnonymous" . :json-false)
+                                  ("isPremium" . ,premium)
+                                  ("token" . ,token)
+                                  ("username" . ,email))))
+                (keytar-set-password
+                 lsp-grammarly--cookie-key lsp-grammarly--account
+                 (lsp-grammarly--json-encode auth-info))
+                (lsp-grammarly--init)
+                (message "[INFO] Logged in as `%s`" name))))
            :error
            (cl-function
             (lambda (&rest args &key _error-thrown &allow-other-keys)
@@ -358,11 +375,13 @@ Argument CODE is the query string from URI."
 (defun lsp-grammarly-login ()
   "Login to Grammarly.com."
   (interactive)
-  ;;(if (lsp-grammarly-login-p)
-  (if (not (lsp-grammarly-login-p))  ; TODO: remove this
+  (if (lsp-grammarly-login-p)
       (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
-    (setq lsp-grammarly--code-verifier (base64-encode-string (lsp-grammarly--random-bytes 94))
-          lsp-grammarly--challenge (base64-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t)))
+    (setq lsp-grammarly--code-verifier "mhvVSnS0etmdWjEb7EtYY6vlB6bNVh20yd444AXTmjdvmJfRvojWxI6_6aJBAL4Oq7YTH57nzKL1tcQmHksvnxFzwGXM-R_lwqsOsnoY8ZWJkWlwhUeSI4c-rSd2hdYF"
+          ;;(base64-encode-string (lsp-grammarly--random-bytes 96))
+          lsp-grammarly--challenge "FFFRpovg5iYVLyoXJrwqcyPZbtLP3rRNeMrtqlK4_dc"
+          ;;(base64-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t))
+          )
     (browse-url (format
                  "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
                  lsp-grammarly-client-id lsp-grammarly--challenge))
