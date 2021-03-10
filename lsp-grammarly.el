@@ -285,7 +285,7 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
   "Handle URI for authentication."
   (let ((prefix "vscode://znck.grammarly/auth/callback?") query)
     (if (not (string-prefix-p prefix uri))
-        (message "[WARNING] An URL should start with prefix: %s" prefix)
+        (user-error "[WARNING] An URL should start with prefix: %s" prefix)
       (setq uri (s-replace prefix "" uri)
             query (url-parse-query-string uri))
       (nth 1 (assoc "code" query)))))
@@ -311,6 +311,7 @@ Argument CODE is the query string from URI."
                grauth (grammarly--get-cookie-by-name "grauth")
                gnar-containerId (grammarly--get-cookie-by-name "gnar_containerId"))
          (message "╘[TL] code: %s" code)
+         (message "╘[TL] code-verifier: %s" lsp-grammarly--code-verifier)
          (message "╘[TL] csrf-token: %s" csrf-token)
          (message "╘[TL] gnar_containerId: %s" gnar-containerId)
          (message "╘[TL] grauth: %s" grauth)
@@ -335,14 +336,15 @@ Argument CODE is the query string from URI."
             (lambda (&key _response data &allow-other-keys)
               (message "success!!")
               (let* ((user (json-read-from-string data))
-                     ;;(username "mike316mike316@yahoo.com.tw")
-                     ;;(token "grauth=AABJBhIdZbfzDTcJb7Yc6ayWyn-DNZUGjREs1J2Nl0wM9Qqx8LZZGMFbI9uDv8fHZ6T0nrQZ0khWOfTr; csrf-token=AABJBu7EvUBMxXGvtFQT9QJQss9tMoOXukhgjg; tdi=vgopt3pe6cbr3x8g;")
+                     (username "N/A")
+                     (email "user@example.com")
+                     (token "grauth=AABJBhIdZbfzDTcJb7Yc6ayWyn-DNZUGjREs1J2Nl0wM9Qqx8LZZGMFbI9uDv8fHZ6T0nrQZ0khWOfTr; csrf-token=AABJBu7EvUBMxXGvtFQT9QJQss9tMoOXukhgjg; tdi=vgopt3pe6cbr3x8g;")
                      (authInfo `((isAnonymous . :json-false)
                                  (isPremium . t)
                                  (token . ,token)
-                                 (username . ,username))))
+                                 (username . ,email))))
                 ;; TODO: ..
-                (message "╘[TL] user: %s" user)
+                (message "[INFO] Logged in as `%s`" username)
                 )))
            :error
            (cl-function
