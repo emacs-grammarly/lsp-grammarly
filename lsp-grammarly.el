@@ -184,18 +184,17 @@ For argument CALLBACK, see object `lsp--client' description."
 ;; (@* "Server" )
 ;;
 
-(defconst lsp-grammarly-uri "extensionEmacs"
+(defconst lsp-grammarly-client-id "extensionVSCode"
   "Key for URI scheme.")
 
 (defun lsp-grammarly--resolve-uri (uri)
   "Handle URI for authentication."
-  (message ">>>> resolve: %s" uri)
-  (let ((path (lsp--uri-to-path uri))
-        code)
-    (when (string= path "/auth/callback")
-      (lsp-grammarly--uri-callback code)
-      )
-    ))
+  (let ((prefix "vscode://znck.grammarly/auth/callback?") query)
+    (if (not (string-prefix-p prefix uri))
+        (message "[WARNING] An URL should start with prefix: %s" prefix)
+      (setq uri (s-replace prefix "" uri)
+            query (url-parse-query-string uri))
+      (nth 1 (assoc "code" query)))))
 
 (defun lsp-grammarly--server-command ()
   "Generate startup command for Grammarly language server."
@@ -291,62 +290,66 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
 (defvar lsp-grammarly--code-verifier nil "Login information, code verifier.")
 (defvar lsp-grammarly--challenge nil "Login information, challenge.")
 
-(defun lsp-grammarly--uri-callback (code)
+(defun lsp-grammarly--uri-callback ()
   "Callback after resolving URI.
 
 Argument CODE is the query string from URI."
-  (request
-    (format "https://auth.grammarly.com/v3/user/oranonymous?app=%s" lsp-grammarly-uri)
-    :type "GET"
-    :headers
-    `(("x-client-type". ,lsp-grammarly-uri)
-      ("x-client-version" . "0.0.0"))
-    :success
-    (cl-function
-     (lambda (&key response data &allow-other-keys)
-       (message "╘[TL] data: %s" data)
-       (message "╘[TL] response: %s" response)
-       (grammarly--form-cookie)
-       (request
-         "https://auth.grammarly.com/v3/api/unified-login/code/exchange"
-         :type "POST"
-         :headers
-         `(("Accept" . "application/json")
-           ("Context-Type" . "application/json")
-           ("x-client-type" . ,lsp-grammarly-uri)
-           ("x-client-version" . "0.0.0")
-           ("x-csrf-token" . ,(grammarly--get-cookie-by-name "csrf-token"))
-           ("x-container-id" . ,(grammarly--get-cookie-by-name "gnar_containerId"))
-           ("cookie" . (format "grauth=%s; csrf-token=%s"
-                               (grammarly--get-cookie-by-name "grauth")
-                               (grammarly--get-cookie-by-name "csrf-token"))))
-         :data
-         (json-encode
-          `(("client_id" . ,lsp-grammarly-uri)
-            ("code" . ,code)
-            ("code_verifier" . ,lsp-grammarly--code-verifier)))
-         :success
-         (cl-function
-          (lambda (&key _response &allow-other-keys)
-            ))
-         :error
-         (cl-function
-          (lambda (&rest args &key _error-thrown &allow-other-keys)
-            (lsp-grammarly--message "[ERROR] Error while authenticating login: %s" args))))))
-    :error
-    (cl-function
-     (lambda (&rest args &key _error-thrown &allow-other-keys)
-       (lsp-grammarly--message "[ERROR] Error while getting cookie: %s" args)))
-    )
-
-  (let* ((username "mike316mike316@yahoo.com.tw")
-         (token "grauth=AABJBhIdZbfzDTcJb7Yc6ayWyn-DNZUGjREs1J2Nl0wM9Qqx8LZZGMFbI9uDv8fHZ6T0nrQZ0khWOfTr; csrf-token=AABJBu7EvUBMxXGvtFQT9QJQss9tMoOXukhgjg; tdi=vgopt3pe6cbr3x8g;")
-         (authInfo `((isAnonymous . :json-false)
-                     (isPremium . t)
-                     (token . ,token)
-                     (username . ,username))))
-
-    ))
+  (let* ((uri (read-string "[Grammarly Authentication] code: "))
+         (code (lsp-grammarly--resolve-uri uri)))
+    (request
+      (format "https://auth.grammarly.com/v3/user/oranonymous?app=%s" lsp-grammarly-client-id)
+      :type "GET"
+      :headers
+      `(("x-client-type". ,lsp-grammarly-client-id)
+        ("x-client-version" . "0.0.0"))
+      :success
+      (cl-function
+       (lambda (&key _response _data &allow-other-keys)
+         (grammarly--form-cookie)
+         (message "╘[TL] code: %s" code)
+         (message "╘[TL] csrf-token: %s" (grammarly--get-cookie-by-name "csrf-token"))
+         (message "╘[TL] gnar_containerId: %s" (grammarly--get-cookie-by-name "gnar_containerId"))
+         (message "╘[TL] grauth: %s" (grammarly--get-cookie-by-name "grauth"))
+         (request
+           "https://auth.grammarly.com/v3/api/unified-login/code/exchange"
+           :type "POST"
+           :headers
+           `(("Accept" . "application/json")
+             ("Context-Type" . "application/json")
+             ("x-client-type" . ,lsp-grammarly-client-id)
+             ("x-client-version" . "0.0.0")
+             ("x-csrf-token" . ,(grammarly--get-cookie-by-name "csrf-token"))
+             ("x-container-id" . ,(grammarly--get-cookie-by-name "gnar_containerId"))
+             ("cookie" . (format "grauth=%s; csrf-token=%s"
+                                 (grammarly--get-cookie-by-name "grauth")
+                                 (grammarly--get-cookie-by-name "csrf-token"))))
+           :data
+           (json-encode
+            `(("client_id" . ,lsp-grammarly-client-id)
+              ("code" . ,code)
+              ("code_verifier" . ,lsp-grammarly--code-verifier)))
+           :success
+           (cl-function
+            (lambda (&key _response data &allow-other-keys)
+              (message "success!!")
+              (let* ((user (json-read-from-string data))
+                     ;;(username "mike316mike316@yahoo.com.tw")
+                     ;;(token "grauth=AABJBhIdZbfzDTcJb7Yc6ayWyn-DNZUGjREs1J2Nl0wM9Qqx8LZZGMFbI9uDv8fHZ6T0nrQZ0khWOfTr; csrf-token=AABJBu7EvUBMxXGvtFQT9QJQss9tMoOXukhgjg; tdi=vgopt3pe6cbr3x8g;")
+                     (authInfo `((isAnonymous . :json-false)
+                                 (isPremium . t)
+                                 (token . ,token)
+                                 (username . ,username))))
+                ;; TODO: ..
+                (message "╘[TL] user: %s" user)
+                )))
+           :error
+           (cl-function
+            (lambda (&rest args &key _error-thrown &allow-other-keys)
+              (lsp-grammarly--message "[ERROR] Error while authenticating login: %s" args))))))
+      :error
+      (cl-function
+       (lambda (&rest args &key _error-thrown &allow-other-keys)
+         (lsp-grammarly--message "[ERROR] Error while getting cookie: %s" args))))))
 
 (defun lsp-grammarly-login ()
   "Login to Grammarly.com."
@@ -358,7 +361,8 @@ Argument CODE is the query string from URI."
           lsp-grammarly--challenge (base64-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t)))
     (browse-url (format
                  "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
-                 lsp-grammarly-uri lsp-grammarly--challenge))))
+                 lsp-grammarly-client-id lsp-grammarly--challenge))
+    (lsp-grammarly--uri-callback)))
 
 (defun lsp-grammarly-logout ()
   "Logout from Grammarly.com."
