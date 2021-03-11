@@ -167,7 +167,6 @@ This is only for development use."
   "Return the token from variable `lsp-grammarly--password'.
 
 For argument CALLBACK, see object `lsp--client' description."
-  (message "╘[TL] lsp-grammarly--password: %s" lsp-grammarly--password)
   (funcall callback lsp-grammarly--password))
 
 (defun lsp-grammarly--store-token (_workspace _uri _callback &rest _)
@@ -361,7 +360,7 @@ Argument CODE is the query string from URI."
                 (keytar-set-password
                  lsp-grammarly--cookie-key lsp-grammarly--account
                  (lsp-grammarly--json-encode auth-info))
-                (lsp-grammarly--init)
+                (lsp-restart-workspace)
                 (message "[INFO] Logged in as `%s`" name))))
            :error
            (cl-function
@@ -395,6 +394,7 @@ Argument CODE is the query string from URI."
         (progn
           (setq lsp-grammarly--password nil
                 lsp-grammarly--password-string nil)
+          (lsp-restart-workspace)
           (message "[INFO] Logged out of Grammarly.com."))
       (message "[ERROR] Failed to logout from Grammarly.com"))))
 
