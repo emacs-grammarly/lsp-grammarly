@@ -87,8 +87,8 @@ can now close VSCode and go back to Emacs!
 Hit `M-x lsp-grammarly-login` and you should see the Grammarly's website pop out
 from your favorite browser. See below [screenshot](#authentication-from-grammarly-website),
 
-After login, click the button `Open URL:vscode`, If you have VSCode install, then
-this will be `Open Visual Studio Code` yet it doesn't matter.
+After login, click the button `Open URL:vscode`, If you have VSCode installed, then
+this will be `Open Visual Studio Code` instead yet it doesn't matter.
 
 <p align="center"><img src="./etc/login/open-url-vscode.png"/></p>
 
