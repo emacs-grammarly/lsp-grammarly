@@ -19,6 +19,57 @@
                        (lsp))))  ; or lsp-deferred
 ```
 
+## :money_with_wings: Using a Paid Grammarly Account
+
+You can either login with [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
+using VSCode or hit `M-x lsp-grammarly-login`. They both share the same credentials
+so you can login with either side.
+
+### Method 1: Login with VSCode (easier)
+
+Install VSCode and install extension [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
+from the extension panel.
+
+[](./etc/login/vscode-grammarly-extension.png)
+
+Then call command palette (default to <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>p</kbd>)
+and type to search `grammarly login` command.
+
+You should see [Grammarly Website](#authentication-from-grammarly-website) and
+login with your Grammarly account.
+
+[](./etc/login/open-app-vscode.png)
+
+Make sure you click on the button `Open Visual Studio Code`. Done! You can now
+close VSCode and go back to Emacs!
+
+### Method 2: Login with Emacs (a bit complicated)
+
+Hit `M-x lsp-grammarly-login` and you should see the Grammarly's website pop out
+from your favorite browser. See below [screenshot](#authentication-from-grammarly-website),
+
+After login, click the button `Open URL:vscode`.
+
+[](./etc/login/open-url-vscode.png)
+
+Then click <kbd>F12</kbd> to open the DevTool window. You should able to see
+an URI like the following
+
+[](./etc/login/external-handler.png)
+
+Copy and paste the URI back to Emacs and hit return.
+
+[](./etc/login/emacs-paste.png)
+
+Done! Now you should be loggin! :tada:
+
+### Authentication from Grammarly website
+
+Login with your Grammarly account (This step does not require VSCode to be
+installed)!
+
+[](./etc/login/vscode-grammarly-login.png)
+
 ## :mag: Commands
 
 List of commands interact with `language server` and `Grammarly.com`.
