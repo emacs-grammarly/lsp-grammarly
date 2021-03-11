@@ -9,7 +9,7 @@
 
 ![](./etc/screenshot.png)
 
-## Quickstart
+## :floppy_disk: Quickstart
 
 ```el
 (use-package lsp-grammarly
@@ -19,7 +19,7 @@
                        (lsp))))  ; or lsp-deferred
 ```
 
-## Commands
+## :mag: Commands
 
 List of commands interact with `language server` and `Grammarly.com`.
 
@@ -31,7 +31,7 @@ List of commands interact with `language server` and `Grammarly.com`.
 | lsp-grammarly-stop               | Stop grammarly checker from current document (buffer)                  |
 | lsp-grammarly-get-document-state | Log out current document status, score, readability, words count, etc. |
 
-## Configuration
+## :wrench: Configuration
 
 `lsp-grammarly` supports following configuration. Each configuration is described in
 detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-settings).
@@ -45,7 +45,7 @@ detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-setti
 * `grammarly.userWords` via `lsp-grammarly-user-words`
 * `grammarly.overrides` via `lsp-grammarly-override`
 
-## Roadmap
+## :pencil: Roadmap
 
 List of todos, but I have not got time to implement these features.
 
