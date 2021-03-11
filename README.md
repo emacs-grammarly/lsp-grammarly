@@ -29,7 +29,7 @@ List of commands interact with `language server` and `Grammarly.com`.
 | lsp-grammarly-logout             | Logout from Grammarly.com                                              |
 | lsp-grammarly-check-grammar      | Start grammarly check for currnet document (buffer)                    |
 | lsp-grammarly-stop               | Stop grammarly checker from current document (buffer)                  |
-| lsp-grammarly-get-document-state | Log out current document status, score, readability, words count, etc. |
+| lsp-grammarly-get-document-state | Log out current document status, `score`, `readability`, `words count`, etc. |
 
 ## :wrench: Configuration
 
@@ -49,7 +49,7 @@ detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-setti
 
 List of todos, but I have not got time to implement these features.
 
-- [ ] Create another package that displays information from Grammarly.com.
+- [ ] Create another package that displays information from [Grammarly.com]().
 Like, `score`, `readability`, `word counts`, etc.
 
 ## Contribution
