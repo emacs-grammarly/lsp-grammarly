@@ -35,6 +35,8 @@ from the extension panel.
 Then call command palette (default to <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>p</kbd>)
 and type to search `grammarly login` command.
 
+![](./etc/login/vscode-grammarly-login.png)
+
 You should see [Grammarly Website](#authentication-from-grammarly-website) and
 login with your Grammarly account.
 
@@ -69,7 +71,7 @@ Copy and paste the URI back to Emacs and hit return.
 Login with your Grammarly account (This step does not require VSCode to be
 installed)!
 
-[](./etc/login/vscode-grammarly-login.png)
+![](./etc/login/grammarly-website.png)
 
 ## :mag: Commands
 
