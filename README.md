@@ -40,15 +40,16 @@ login with your Grammarly account.
 
 ![](./etc/login/open-app-vscode.png)
 
-Make sure you click on the button `Open Visual Studio Code`. Done! You can now
-close VSCode and go back to Emacs!
+:tada: Make sure you click on the button `Open Visual Studio Code`. Done! You
+can now close VSCode and go back to Emacs!
 
 ### Method 2: Login with Emacs (a bit complicated)
 
 Hit `M-x lsp-grammarly-login` and you should see the Grammarly's website pop out
 from your favorite browser. See below [screenshot](#authentication-from-grammarly-website),
 
-After login, click the button `Open URL:vscode`.
+After login, click the button `Open URL:vscode`, If you have VSCode install, then
+this will be `Open Visual Studio Code` yet it doesn't matter.
 
 ![](./etc/login/open-url-vscode.png)
 
@@ -61,7 +62,7 @@ Copy and paste the URI back to Emacs and hit return.
 
 ![](./etc/login/emacs-paste.png)
 
-Done! Now you should be loggin! :tada:
+:tada: Done! Now you should be loggin!
 
 ### Authentication from Grammarly website
 
