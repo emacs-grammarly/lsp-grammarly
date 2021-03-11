@@ -25,7 +25,7 @@ You can either login with [vscode-grammarly](https://marketplace.visualstudio.co
 using VSCode or hit `M-x lsp-grammarly-login`. They both share the same credentials
 so you can login with either side.
 
-### Method 1: Login with VSCode (easier)
+### :mag: Method 1: Login with VSCode (easier)
 
 Install VSCode and install extension [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
 from the extension panel.
@@ -45,7 +45,7 @@ login with your Grammarly account.
 :tada: Make sure you click on the button `Open Visual Studio Code`. Done! You
 can now close VSCode and go back to Emacs!
 
-### Method 2: Login with Emacs (a bit complicated)
+### :mag: Method 2: Login with Emacs (a bit complicated)
 
 Hit `M-x lsp-grammarly-login` and you should see the Grammarly's website pop out
 from your favorite browser. See below [screenshot](#authentication-from-grammarly-website),
@@ -73,7 +73,7 @@ installed)!
 
 ![](./etc/login/grammarly-website.png)
 
-## :mag: Commands
+## :card_index: Commands
 
 List of commands interact with `language server` and `Grammarly.com`.
 
