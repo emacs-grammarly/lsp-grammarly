@@ -19,6 +19,39 @@
                        (lsp))))  ; or lsp-deferred
 ```
 
+## :card_index: Commands
+
+List of commands interact with `language server` and `Grammarly.com`.
+
+| Commands                         | Description                                                            |
+|:---------------------------------|:-----------------------------------------------------------------------|
+| lsp-grammarly-login              | Login to Grammarly.com                                                 |
+| lsp-grammarly-logout             | Logout from Grammarly.com                                              |
+| lsp-grammarly-check-grammar      | Start grammarly check for currnet document (buffer)                    |
+| lsp-grammarly-stop               | Stop grammarly checker from current document (buffer)                  |
+| lsp-grammarly-get-document-state | Log out current document status, `score`, `readability`, `words count`, etc. |
+
+## :wrench: Configuration
+
+`lsp-grammarly` supports following configuration. Each configuration is described in
+detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-settings).
+
+* `grammarly.autoActivate` via `lsp-grammarly-auto-activate`
+* `grammarly.audience` via `lsp-grammarly-audience`
+* `grammarly.dialect` via `lsp-grammarly-dialect`
+* `grammarly.domain` via `lsp-grammarly-domain`
+* `grammarly.emotions` via `lsp-grammarly-emotions`
+* `grammarly.goals` via `lsp-grammarly-goals`
+* `grammarly.userWords` via `lsp-grammarly-user-words`
+* `grammarly.overrides` via `lsp-grammarly-override`
+
+## :pencil: Roadmap
+
+List of todos, but I have not got time to implement these features.
+
+- [ ] Create another package that displays information from [Grammarly.com]().
+Like, `score`, `readability`, `word counts`, etc.
+
 ## :money_with_wings: Using a Paid Grammarly Account
 
 You can either login with [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
@@ -73,39 +106,6 @@ Login with your Grammarly account (This step does not require VSCode to be
 installed)!
 
 <p align="center"><img src="./etc/login/grammarly-website.png"/></p>
-
-## :card_index: Commands
-
-List of commands interact with `language server` and `Grammarly.com`.
-
-| Commands                         | Description                                                            |
-|:---------------------------------|:-----------------------------------------------------------------------|
-| lsp-grammarly-login              | Login to Grammarly.com                                                 |
-| lsp-grammarly-logout             | Logout from Grammarly.com                                              |
-| lsp-grammarly-check-grammar      | Start grammarly check for currnet document (buffer)                    |
-| lsp-grammarly-stop               | Stop grammarly checker from current document (buffer)                  |
-| lsp-grammarly-get-document-state | Log out current document status, `score`, `readability`, `words count`, etc. |
-
-## :wrench: Configuration
-
-`lsp-grammarly` supports following configuration. Each configuration is described in
-detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-settings).
-
-* `grammarly.autoActivate` via `lsp-grammarly-auto-activate`
-* `grammarly.audience` via `lsp-grammarly-audience`
-* `grammarly.dialect` via `lsp-grammarly-dialect`
-* `grammarly.domain` via `lsp-grammarly-domain`
-* `grammarly.emotions` via `lsp-grammarly-emotions`
-* `grammarly.goals` via `lsp-grammarly-goals`
-* `grammarly.userWords` via `lsp-grammarly-user-words`
-* `grammarly.overrides` via `lsp-grammarly-override`
-
-## :pencil: Roadmap
-
-List of todos, but I have not got time to implement these features.
-
-- [ ] Create another package that displays information from [Grammarly.com]().
-Like, `score`, `readability`, `word counts`, etc.
 
 ## Contribution
 
