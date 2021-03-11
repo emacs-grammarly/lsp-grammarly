@@ -360,6 +360,8 @@ Argument CODE is the query string from URI."
                 (keytar-set-password
                  lsp-grammarly--cookie-key lsp-grammarly--account
                  (lsp-grammarly--json-encode auth-info))
+                ;; TODO: This is slow, need to improve the performance for better
+                ;; user experience.
                 (lsp-restart-workspace)
                 (message "[INFO] Logged in as `%s`" name))))
            :error
