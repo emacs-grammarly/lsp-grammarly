@@ -377,12 +377,10 @@ Argument CODE is the query string from URI."
   (interactive)
   (if (lsp-grammarly-login-p)
       (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
-    ;; TODO: This isn't working!!
-    (setq lsp-grammarly--code-verifier "mhvVSnS0etmdWjEb7EtYY6vlB6bNVh20yd444AXTmjdvmJfRvojWxI6_6aJBAL4Oq7YTH57nzKL1tcQmHksvnxFzwGXM-R_lwqsOsnoY8ZWJkWlwhUeSI4c-rSd2hdYF"
-          ;;(base64-encode-string (lsp-grammarly--random-bytes 96))
-          lsp-grammarly--challenge "FFFRpovg5iYVLyoXJrwqcyPZbtLP3rRNeMrtqlK4_dc"
-          ;;(base64-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t))
-          )
+    (setq lsp-grammarly--code-verifier
+          (base64url-encode-string (lsp-grammarly--random-bytes 96) t)
+          lsp-grammarly--challenge
+          (base64url-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t) t))
     (browse-url (format
                  "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
                  lsp-grammarly-client-id lsp-grammarly--challenge))
