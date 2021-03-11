@@ -7,7 +7,7 @@
 
 `lsp-mode` client leveraging [unofficial-grammarly-language-server](https://github.com/znck/grammarly).
 
-![](./etc/screenshot.png)
+<p align="center"><img src="./etc/screenshot.png"/></p>
 
 ## :floppy_disk: Quickstart
 
@@ -30,17 +30,17 @@ so you can login with either side.
 Install VSCode and install extension [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
 from the extension panel.
 
-![](./etc/login/vscode-grammarly-extension.png)
+<p align="center"><img src="./etc/login/vscode-grammarly-extension.png"/></p>
 
 Then call command palette (default to <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>p</kbd>)
 and type to search `grammarly login` command.
 
-![](./etc/login/vscode-grammarly-login.png)
+<p align="center"><img src="./etc/login/vscode-grammarly-login.png"/></p>
 
 You should see [Grammarly Website](#authentication-from-grammarly-website) and
 login with your Grammarly account.
 
-![](./etc/login/open-app-vscode.png)
+<p align="center"><img src="./etc/login/open-app-vscode.png"/></p>
 
 :tada: Make sure you click on the button `Open Visual Studio Code`. Done! You
 can now close VSCode and go back to Emacs!
@@ -53,16 +53,17 @@ from your favorite browser. See below [screenshot](#authentication-from-grammarl
 After login, click the button `Open URL:vscode`, If you have VSCode install, then
 this will be `Open Visual Studio Code` yet it doesn't matter.
 
-![](./etc/login/open-url-vscode.png)
+<p align="center"><img src="./etc/login/open-url-vscode.png"/></p>
 
 Then click <kbd>F12</kbd> to open the DevTool window. You should able to see
 an URI like the following
 
-![](./etc/login/external-handler.png)
+<p align="center"><img src="./etc/login/external-handler.png"/></p>
 
 Copy and paste the URI back to Emacs and hit return.
 
-![](./etc/login/emacs-paste.png)
+<p align="center"><img src="./etc/login/emacs-paste.png"/></p>
+
 
 :tada: Done! Now you should be loggin!
 
@@ -71,7 +72,7 @@ Copy and paste the URI back to Emacs and hit return.
 Login with your Grammarly account (This step does not require VSCode to be
 installed)!
 
-![](./etc/login/grammarly-website.png)
+<p align="center"><img src="./etc/login/grammarly-website.png"/></p>
 
 ## :card_index: Commands
 
