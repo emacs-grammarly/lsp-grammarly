@@ -54,9 +54,7 @@ Like, `score`, `readability`, `word counts`, etc.
 
 ## :money_with_wings: Using a Paid Grammarly Account
 
-### Prerequisite
-
-To login make sure you have package [keytar](https://github.com/emacs-grammarly/keytar)
+:pencil: **NOTE:** To login make sure you have package [keytar](https://github.com/emacs-grammarly/keytar)
 set up properly. See [keytar#installation](https://github.com/emacs-grammarly/keytar#installation)
 for setup instruction.
 
