@@ -54,9 +54,9 @@ Like, `score`, `readability`, `word counts`, etc.
 
 ## :money_with_wings: Using a Paid Grammarly Account
 
-> :pencil: **NOTE:** To login, make sure you have package [keytar](https://github.com/emacs-grammarly/keytar)
+> ***NOTE:** To login, make sure you have package [keytar](https://github.com/emacs-grammarly/keytar)
 set up properly. See [keytar#installation](https://github.com/emacs-grammarly/keytar#installation)
-for setup instruction.
+for setup instruction.*
 
 You can either login with [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
 using VSCode or hit `M-x lsp-grammarly-login`. They both share the same credentials
