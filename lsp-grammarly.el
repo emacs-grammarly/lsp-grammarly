@@ -191,7 +191,7 @@ For argument CALLBACK, see object `lsp--client' description."
         (message "[INFO] Logged in as, %s" (lsp-grammarly--username))
       (message "[INFO] Visited as, anonymous"))))
 
-(defun lsp-grammarly--show-error (_workspace _uri callback &rest _)
+(defun lsp-grammarly--show-error (_workspace uri callback &rest _)
   "Show error from language server.
 
 For argument CALLBACK, see object `lsp--client' description."
