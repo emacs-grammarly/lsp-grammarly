@@ -195,6 +195,8 @@ For argument CALLBACK, see object `lsp--client' description."
   "Show error from language server.
 
 For argument CALLBACK, see object `lsp--client' description."
+  ;; TODO: This only shows credentials error but we have it resolve
+  ;; on our side.
   (funcall callback))
 
 (defun lsp-grammarly--update-document-state (_workspace _uri _callback &rest _)
