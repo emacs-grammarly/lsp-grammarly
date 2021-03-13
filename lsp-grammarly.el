@@ -163,6 +163,12 @@ This is only for development use."
   "Return non-nil if currently logged in to Grammarly.com."
   lsp-grammarly--password)
 
+(defun lsp-grammarly--get-credentials (_workspace _uri callback &rest _)
+  "Return the credentials from native password manager.
+
+For argument CALLBACK, see object `lsp--client' description."
+  (funcall callback))
+
 (defun lsp-grammarly--get-token (_workspace _uri callback &rest _)
   "Return the token from variable `lsp-grammarly--password'.
 
@@ -184,6 +190,20 @@ For argument CALLBACK, see object `lsp--client' description."
     (if (lsp-grammarly-login-p)
         (message "[INFO] Logged in as, %s" (lsp-grammarly--username))
       (message "[INFO] Visited as, anonymous"))))
+
+(defun lsp-grammarly--show-error (_workspace _uri callback &rest _)
+  "Show error from language server.
+
+For argument CALLBACK, see object `lsp--client' description."
+  (funcall callback))
+
+(defun lsp-grammarly--update-document-state (_workspace _uri _callback &rest _)
+  "Update the document status from current document."
+  ;; TODO: this is where you get the document state to update modeline
+  ;; information for this plugin.
+  ;;
+  ;; Currently, this does nothing.
+  )
 
 ;;
 ;; (@* "Server" )
@@ -220,8 +240,11 @@ For argument CALLBACK, see object `lsp--client' description."
                         (lsp-package-ensure 'grammarly-ls callback error-callback))
   :after-open-fn #'lsp-grammarly--init
   :async-request-handlers
-  (ht ("$/getToken" #'lsp-grammarly--get-token)
-      ("$/storeToken" #'lsp-grammarly--store-token))))
+  (ht ("$/getCredentials" #'lsp-grammarly--get-credentials)
+      ("$/getToken" #'lsp-grammarly--get-token)
+      ("$/storeToken" #'lsp-grammarly--store-token)
+      ("$/showError" #'lsp-grammarly--show-error)
+      ("$/updateDocumentState" #'lsp-grammarly--update-document-state))))
 
 ;;
 ;; (@* "Commands" )
