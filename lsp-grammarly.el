@@ -7,7 +7,7 @@
 ;; Description: LSP Clients for Grammarly.
 ;; Keyword: lsp grammarly checker
 ;; Version: 0.2.0
-;; Package-Requires: ((emacs "27.1") (lsp-mode "6.1") (grammarly "0.3.0") (keytar "0.1.1") (request "0.3.0") (s "1.12.0") (ht "2.3"))
+;; Package-Requires: ((emacs "27.1") (lsp-mode "6.1") (grammarly "0.3.0") (keytar "0.1.2") (request "0.3.0") (s "1.12.0") (ht "2.3"))
 ;; URL: https://github.com/emacs-grammarly/lsp-grammarly
 
 ;; This file is NOT part of GNU Emacs.
