@@ -183,7 +183,8 @@ For argument CALLBACK, see object `lsp--client' description."
 (defun lsp-grammarly--init (&rest _)
   "Get Grammarly API ready."
   (unless (lsp-grammarly-login-p)
-    (let ((pass (keytar-get-password lsp-grammarly--cookie-key lsp-grammarly--account)))
+    (let ((pass (ignore-errors
+                  (keytar-get-password lsp-grammarly--cookie-key lsp-grammarly--account))))
       (when pass
         (setq lsp-grammarly--password-string pass
               lsp-grammarly--password (ignore-errors (json-read-from-string pass)))))
