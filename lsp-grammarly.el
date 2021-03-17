@@ -427,7 +427,7 @@ Argument CODE is the query string from URI."
           (setq lsp-grammarly--password nil
                 lsp-grammarly--password-string nil)
           (lsp-restart-workspace)
-          (message "[INFO] Logged out of Grammarly.com."))
+          (message "[INFO] Logged out of Grammarly.com"))
       (message "[ERROR] Failed to logout from Grammarly.com"))))
 
 (provide 'lsp-grammarly)
