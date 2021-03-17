@@ -5,6 +5,22 @@
 
 # lsp-grammarly
 
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [lsp-grammarly](#lsp-grammarly)
+    - [:floppy_disk: Quickstart](#floppy_disk-quickstart)
+    - [:card_index: Commands](#card_index-commands)
+    - [:wrench: Configuration](#wrench-configuration)
+    - [:pencil: Roadmap](#pencil-roadmap)
+    - [:money_with_wings: Using a Paid Grammarly Account](#money_with_wings-using-a-paid-grammarly-account)
+        - [:mag: Method 1: Login with VSCode (easier)](#mag-method-1-login-with-vscode-easier)
+        - [:mag: Method 2: Login with Emacs (a bit complicated)](#mag-method-2-login-with-emacs-a-bit-complicated)
+        - [Authentication from Grammarly website](#authentication-from-grammarly-website)
+    - [Contribution](#contribution)
+
+<!-- markdown-toc end -->
+
 `lsp-mode` client leveraging [unofficial-grammarly-language-server](https://github.com/znck/grammarly).
 
 <p align="center"><img src="./etc/screenshot.png"/></p>
