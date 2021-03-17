@@ -167,7 +167,7 @@ This is only for development use."
   "Return the credentials from native password manager.
 
 For argument CALLBACK, see object `lsp--client' description."
-  (funcall callback))
+  (funcall callback nil))
 
 (defun lsp-grammarly--get-token (_workspace _uri callback &rest _)
   "Return the token from variable `lsp-grammarly--password'.
