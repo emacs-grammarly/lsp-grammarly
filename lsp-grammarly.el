@@ -388,7 +388,7 @@ Argument CODE is the query string from URI."
                  (lsp-grammarly--json-encode auth-info))
                 ;; TODO: This is slow, need to improve the performance for better
                 ;; user experience.
-                (lsp-restart-workspace)
+                (ignore-errors (lsp-restart-workspace))
                 (message "[INFO] Logged in as `%s`" name))))
            :error
            (cl-function
@@ -404,14 +404,18 @@ Argument CODE is the query string from URI."
   (interactive)
   (if (lsp-grammarly-login-p)
       (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
-    (setq lsp-grammarly--code-verifier
-          (base64url-encode-string (lsp-grammarly--random-bytes 96) t)
-          lsp-grammarly--challenge
-          (base64url-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t) t))
-    (browse-url (format
-                 "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
-                 lsp-grammarly-client-id lsp-grammarly--challenge))
-    (lsp-grammarly--uri-callback)))
+    (if (not (keytar-installed-p))
+        (user-error
+         "[WARNING] You don't have `%s` installed, please install it through `npm` or hit `M-x keytar-install`"
+         keytar-package-name)
+      (setq lsp-grammarly--code-verifier
+            (base64url-encode-string (lsp-grammarly--random-bytes 96) t)
+            lsp-grammarly--challenge
+            (base64url-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t) t))
+      (browse-url (format
+                   "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
+                   lsp-grammarly-client-id lsp-grammarly--challenge))
+      (lsp-grammarly--uri-callback))))
 
 (defun lsp-grammarly-logout ()
   "Logout from Grammarly.com."
