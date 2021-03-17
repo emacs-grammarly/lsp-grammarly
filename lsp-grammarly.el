@@ -402,24 +402,22 @@ Argument CODE is the query string from URI."
 (defun lsp-grammarly-login ()
   "Login to Grammarly.com."
   (interactive)
+  (keytar--ckeck)
   (if (lsp-grammarly-login-p)
       (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
-    (if (not (keytar-installed-p))
-        (user-error
-         "[WARNING] You don't have `%s` installed, please install it through `npm` or hit `M-x keytar-install`"
-         keytar-package-name)
-      (setq lsp-grammarly--code-verifier
-            (base64url-encode-string (lsp-grammarly--random-bytes 96) t)
-            lsp-grammarly--challenge
-            (base64url-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t) t))
-      (browse-url (format
-                   "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
-                   lsp-grammarly-client-id lsp-grammarly--challenge))
-      (lsp-grammarly--uri-callback))))
+    (setq lsp-grammarly--code-verifier
+          (base64url-encode-string (lsp-grammarly--random-bytes 96) t)
+          lsp-grammarly--challenge
+          (base64url-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t) t))
+    (browse-url (format
+                 "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
+                 lsp-grammarly-client-id lsp-grammarly--challenge))
+    (lsp-grammarly--uri-callback)))
 
 (defun lsp-grammarly-logout ()
   "Logout from Grammarly.com."
   (interactive)
+  (keytar--ckeck)
   (if (not (lsp-grammarly-login-p))
       (message "[INFO] You are already logout from Grammarly.com")
     (if (keytar-delete-password lsp-grammarly--cookie-key lsp-grammarly--account)
