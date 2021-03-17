@@ -5,6 +5,10 @@
 
 # lsp-grammarly
 
+`lsp-mode` client leveraging [unofficial-grammarly-language-server](https://github.com/znck/grammarly).
+
+<p align="center"><img src="./etc/screenshot.png"/></p>
+
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
@@ -20,10 +24,6 @@
     - [Contribution](#contribution)
 
 <!-- markdown-toc end -->
-
-`lsp-mode` client leveraging [unofficial-grammarly-language-server](https://github.com/znck/grammarly).
-
-<p align="center"><img src="./etc/screenshot.png"/></p>
 
 ## :floppy_disk: Quickstart
 
