@@ -65,8 +65,8 @@ detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-setti
 
 List of todos, but I have not got time to implement these features.
 
-- [ ] Create another package that displays information from [Grammarly.com]().
-(To display useful information, `score`, `readability`, `word counts`, etc.)
+- [ ] Create another package that displays information from [Grammarly.com](https://www.grammarly.com/)
+(To display useful information, `score`, `readability`, `word counts`, etc).
 - [ ] Implement command `Ignore Grammarly Issue`.
 - [ ] Implement `diagnostics` and `severity` for configuration.
 
