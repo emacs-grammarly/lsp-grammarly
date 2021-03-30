@@ -141,8 +141,12 @@ This is only for development use."
 
 (defun lsp-grammarly--json-read (string)
   "Ensure read JSON STRING avoid bad string format."
-  (or (ignore-errors (json-read-from-string string))
-      (ignore-errors (json-read-from-string (concat "\"" string "\"")))))
+  (let ((output (or (ignore-errors (json-read-from-string string))
+                    (ignore-errors (json-read-from-string (concat "\"" string "\""))))))
+    ;; After avoiding bad string format, we need to read json once again.
+    (when (stringp output)
+      (setq output (ignore-errors (json-read-from-string output))))
+    output))
 
 ;;
 ;; (@* "Login" )
