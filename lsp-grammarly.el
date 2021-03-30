@@ -7,7 +7,7 @@
 ;; Description: LSP Clients for Grammarly.
 ;; Keyword: lsp grammarly checker
 ;; Version: 0.2.1
-;; Package-Requires: ((emacs "27.1") (lsp-mode "6.1") (grammarly "0.3.0") (keytar "0.1.2") (request "0.3.0") (s "1.12.0") (ht "2.3"))
+;; Package-Requires: ((emacs "27.1") (lsp-mode "6.1") (grammarly "0.3.0") (request "0.3.0") (s "1.12.0") (ht "2.3"))
 ;; URL: https://github.com/emacs-grammarly/lsp-grammarly
 
 ;; This file is NOT part of GNU Emacs.
@@ -34,11 +34,13 @@
 
 (require 'lsp-mode)
 (require 'grammarly)
-(require 'keytar)
 (require 'request)
 (require 's)
 (require 'ht)
 (require 'json)
+
+(unless (require 'keytar nil t)
+  (warn "`Keytar' is required for login into Grammarly account."))
 
 (defgroup lsp-grammarly nil
   "Settings for the Grammarly Language Server.
@@ -133,12 +135,6 @@ This is only for development use."
       (dotimes (_ n) (insert (elt charset (random baseCount))))
       (buffer-string))))
 
-(defun lsp-grammarly--username ()
-  "Return the currently login username."
-  (when lsp-grammarly--password
-    (or (ignore-errors (cdr (assoc 'username lsp-grammarly--password)))
-        (ignore-errors (ht-get lsp-grammarly--password "username")))))
-
 (defun lsp-grammarly--json-encode (obj)
   "Wrap function `json-encode' to convert OBJ for keytar password."
   (s-replace "\"" "\\\"" (json-encode obj)))
@@ -162,6 +158,12 @@ This is only for development use."
 (defun lsp-grammarly-login-p ()
   "Return non-nil if currently logged in to Grammarly.com."
   lsp-grammarly--password)
+
+(defun lsp-grammarly--username ()
+  "Return the currently login username."
+  (when lsp-grammarly--password
+    (or (ignore-errors (cdr (assoc 'username lsp-grammarly--password)))
+        (ignore-errors (ht-get lsp-grammarly--password "username")))))
 
 (defun lsp-grammarly--get-credentials (_workspace _uri callback &rest _)
   "Return the credentials from native password manager.
@@ -236,7 +238,7 @@ For argument CALLBACK, see object `lsp--client' description."
 (lsp-register-client
  (make-lsp-client
   :new-connection (lsp-stdio-connection #'lsp-grammarly--server-command)
-  :major-modes lsp-grammarly-modes
+  :activation-fn (lambda (&rest _) (apply #'derived-mode-p lsp-grammarly-modes))
   :priority -1
   :server-id 'grammarly-ls
   :download-server-fn (lambda (_client callback error-callback _update?)
@@ -335,7 +337,7 @@ Clarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
 Argument CODE is the query string from URI."
   (let* ((uri (read-string "[Grammarly Authentication] code: "))
          (code (lsp-grammarly--resolve-uri uri))
-         cookie csrf-token grauth gnar-containerId)
+         cookie csrf-token grauth gnar-containerId tdi)
     (request
       (format "https://auth.grammarly.com/v3/user/oranonymous?app=%s" lsp-grammarly-client-id)
       :type "GET"
@@ -388,7 +390,7 @@ Argument CODE is the query string from URI."
                  (lsp-grammarly--json-encode auth-info))
                 ;; TODO: This is slow, need to improve the performance for better
                 ;; user experience.
-                (ignore-errors (lsp-restart-workspace))
+                (ignore-errors (lsp-workspace-restart nil))
                 (message "[INFO] Logged in as `%s`" name))))
            :error
            (cl-function
@@ -424,7 +426,7 @@ Argument CODE is the query string from URI."
         (progn
           (setq lsp-grammarly--password nil
                 lsp-grammarly--password-string nil)
-          (lsp-restart-workspace)
+          (lsp-workspace-restart nil)
           (message "[INFO] Logged out of Grammarly.com"))
       (message "[ERROR] Failed to logout from Grammarly.com"))))
 
