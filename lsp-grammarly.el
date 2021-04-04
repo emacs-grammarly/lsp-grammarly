@@ -75,7 +75,7 @@ This is only for development use."
   :group 'lsp-grammarly)
 
 (defcustom lsp-grammarly-dialect "american"
-  "Sets the default audience for every document."
+  "Sets the default dialect for every document."
   :type '(choice (const "american")
                  (const "australian")
                  (const "british")
@@ -83,7 +83,7 @@ This is only for development use."
   :group 'lsp-grammarly)
 
 (defcustom lsp-grammarly-domain "general"
-  "Sets the default audience for every document."
+  "Sets the default domain for every document."
   :type '(choice (const "academic")
                  (const "business")
                  (const "general")
