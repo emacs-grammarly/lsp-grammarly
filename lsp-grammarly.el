@@ -56,11 +56,14 @@ This is only for development use."
   :type 'string
   :group 'lsp-grammarly)
 
-(defcustom lsp-grammarly-modes
+(defcustom lsp-grammarly-active-modes
   '(text-mode latex-mode org-mode markdown-mode)
   "List of major mode that work with Grammarly."
   :type 'list
   :group 'lsp-grammarly)
+
+(define-obsolete-variable-alias
+  'lsp-grammarly-modes 'lsp-grammarly-active-modes "0.2.1")
 
 (defcustom lsp-grammarly-auto-activate t
   "Enable Grammarly service when a supported document is opened."
@@ -247,7 +250,7 @@ For argument CALLBACK, see object `lsp--client' description."
 (lsp-register-client
  (make-lsp-client
   :new-connection (lsp-stdio-connection #'lsp-grammarly--server-command)
-  :activation-fn (lambda (&rest _) (apply #'derived-mode-p lsp-grammarly-modes))
+  :activation-fn (lambda (&rest _) (apply #'derived-mode-p lsp-grammarly-active-modes))
   :priority -1
   :server-id 'grammarly-ls
   :download-server-fn (lambda (_client callback error-callback _update?)
