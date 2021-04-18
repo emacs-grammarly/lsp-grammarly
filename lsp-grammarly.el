@@ -39,8 +39,8 @@
 (require 'ht)
 (require 'json)
 
-(unless (require 'auth-source-keytar nil t)
-  (warn "`auth-source-keytar' is required for login into Grammarly account."))
+(unless (require 'keytar nil t)
+  (warn "`keytar' is required for login into Grammarly account"))
 
 (defgroup lsp-grammarly nil
   "Settings for the Grammarly Language Server.
@@ -191,14 +191,14 @@ For argument CALLBACK, see object `lsp--client' description."
 
 (defun lsp-grammarly--store-token (_workspace _uri _callback &rest _)
   "Save the token once."
-  (auth-source-keytar-set-password
+  (keytar-set-password
    lsp-grammarly--cookie-key lsp-grammarly--account lsp-grammarly--password-string))
 
 (defun lsp-grammarly--init (&rest _)
   "Get Grammarly API ready."
   (unless (lsp-grammarly-login-p)
     (let ((pass (ignore-errors
-                  (auth-source-keytar-get-password lsp-grammarly--cookie-key lsp-grammarly--account))))
+                  (keytar-get-password lsp-grammarly--cookie-key lsp-grammarly--account))))
       (when pass
         (setq lsp-grammarly--password-string pass
               lsp-grammarly--password (lsp-grammarly--json-read pass))))
@@ -397,7 +397,7 @@ Argument CODE is the query string from URI."
                                   ("isPremium" . ,premium)
                                   ("token" . ,token)
                                   ("username" . ,email))))
-                (auth-source-keytar-set-password
+                (keytar-set-password
                  lsp-grammarly--cookie-key lsp-grammarly--account
                  (lsp-grammarly--json-encode auth-info))
                 ;; TODO: This is slow, need to improve the performance for better
@@ -416,7 +416,7 @@ Argument CODE is the query string from URI."
 (defun lsp-grammarly-login ()
   "Login to Grammarly.com."
   (interactive)
-  (auth-source-keytar--ckeck)
+  (keytar--ckeck)
   (if (lsp-grammarly-login-p)
       (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
     (setq lsp-grammarly--code-verifier
@@ -431,10 +431,10 @@ Argument CODE is the query string from URI."
 (defun lsp-grammarly-logout ()
   "Logout from Grammarly.com."
   (interactive)
-  (auth-source-keytar--ckeck)
+  (keytar--ckeck)
   (if (not (lsp-grammarly-login-p))
       (message "[INFO] You are already logout from Grammarly.com")
-    (if (auth-source-keytar-delete-password lsp-grammarly--cookie-key lsp-grammarly--account)
+    (if (keytar-delete-password lsp-grammarly--cookie-key lsp-grammarly--account)
         (progn
           (setq lsp-grammarly--password nil
                 lsp-grammarly--password-string nil)
