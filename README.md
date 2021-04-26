@@ -72,8 +72,8 @@ List of todos, but I have not got time to implement these features.
 
 ## :money_with_wings: Using a Paid Grammarly Account
 
-> ***NOTE:** To login, make sure you have package [auth-source-keytar](https://github.com/emacs-grammarly/auth-source-keytar)
-set up properly. See [auth-source-keytar#installation](https://github.com/emacs-grammarly/auth-source-keytar#installation)
+> ***NOTE:** To login, make sure you have package [keytar](https://github.com/emacs-grammarly/keytar)
+set up properly. See [keytar#installation](https://github.com/emacs-grammarly/keytar#installation)
 for setup instruction.*
 
 You can either login with [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
