@@ -416,7 +416,7 @@ Argument CODE is the query string from URI."
 (defun lsp-grammarly-login ()
   "Login to Grammarly.com."
   (interactive)
-  (keytar--ckeck)
+  (keytar--check)
   (if (lsp-grammarly-login-p)
       (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
     (setq lsp-grammarly--code-verifier
@@ -431,7 +431,7 @@ Argument CODE is the query string from URI."
 (defun lsp-grammarly-logout ()
   "Logout from Grammarly.com."
   (interactive)
-  (keytar--ckeck)
+  (keytar--check)
   (if (not (lsp-grammarly-login-p))
       (message "[INFO] You are already logout from Grammarly.com")
     (if (keytar-delete-password lsp-grammarly--cookie-key lsp-grammarly--account)
