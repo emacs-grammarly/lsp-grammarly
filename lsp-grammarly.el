@@ -252,6 +252,7 @@ For argument CALLBACK, see object `lsp--client' description."
   :new-connection (lsp-stdio-connection #'lsp-grammarly--server-command)
   :activation-fn (lambda (&rest _) (apply #'derived-mode-p lsp-grammarly-active-modes))
   :priority -1
+  :add-on? t
   :server-id 'grammarly-ls
   :download-server-fn (lambda (_client callback error-callback _update?)
                         (lsp-package-ensure 'grammarly-ls callback error-callback))
