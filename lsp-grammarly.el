@@ -56,14 +56,14 @@ This is only for development use."
   :type 'string
   :group 'lsp-grammarly)
 
+(define-obsolete-variable-alias
+  'lsp-grammarly-modes 'lsp-grammarly-active-modes "0.2.1")
+
 (defcustom lsp-grammarly-active-modes
   '(text-mode latex-mode org-mode markdown-mode)
   "List of major mode that work with Grammarly."
   :type 'list
   :group 'lsp-grammarly)
-
-(define-obsolete-variable-alias
-  'lsp-grammarly-modes 'lsp-grammarly-active-modes "0.2.1")
 
 (defcustom lsp-grammarly-auto-activate t
   "Enable Grammarly service when a supported document is opened."
@@ -117,6 +117,15 @@ This is only for development use."
 
 (defvar lsp-grammarly--show-debug-message nil
   "Flag to see if we show debug messages.")
+
+;;
+;; (@* "External" )
+;;
+
+(declare-function keytar--check "ext:keytar.el")
+(declare-function keytar-set-password "ext:keytar.el")
+(declare-function keytar-get-password "ext:keytar.el")
+(declare-function keytar-delete-password "ext:keytar.el")
 
 ;;
 ;; (@* "Util" )
