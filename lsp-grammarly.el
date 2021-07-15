@@ -119,6 +119,15 @@ This is only for development use."
   "Flag to see if we show debug messages.")
 
 ;;
+;; (@* "External" )
+;;
+
+(declare-function keytar--check "ext:keytar.el")
+(declare-function keytar-set-password "ext:keytar.el")
+(declare-function keytar-get-password "ext:keytar.el")
+(declare-function keytar-delete-password "ext:keytar.el")
+
+;;
 ;; (@* "Util" )
 ;;
 
