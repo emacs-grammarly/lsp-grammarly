@@ -293,51 +293,39 @@ For argument CALLBACK, see object `lsp--client' description."
    "$/stop" `(:uri ,(lsp--buffer-uri))
    (lambda (_) (message "Stop Grammarly checker..."))))
 
-(defun lsp-grammarly--get-text-info (state)
-  "Return text info from STATE."
-  (when-let* ((text-info (ht-get state "textInfo"))
-              (chars-count (ht-get text-info "charsCount"))
-              (words-count (ht-get text-info "wordsCount"))
-              (readability-score (ht-get text-info "readabilityScore")))
-    (list chars-count words-count readability-score)))
-
-(defun lsp-grammarly--get-scores (state)
-  "Return scores from STATE."
-  (when-let* ((scores (ht-get state "scores"))
-              (clarity (ht-get scores "Clarity"))
-              (tone (ht-get scores "Tone"))
-              (correctness (ht-get scores "Correctness"))
-              (general-score (ht-get scores "GeneralScore"))
-              (engagement (ht-get scores "Engagement")))
-    (list (lsp-grammarly--scale-100 clarity)
-          (lsp-grammarly--scale-100 tone)
-          (lsp-grammarly--scale-100 correctness)
-          (lsp-grammarly--scale-100 general-score)
-          (lsp-grammarly--scale-100 engagement))))
-
 (defun lsp-grammarly-stats ()
   "Return document state."
   (interactive)
   (lsp-request-async
    "$/getDocumentState" `(:uri ,(lsp--buffer-uri))
    (lambda (state)
-     (let* ((user (ht-get state "user"))
-            (is-premium (ht-get user "isPremium"))
-            (_is-anonymous (ht-get user "isAnonymous"))
-            (username (ht-get user "username"))
-            (score (ht-get state "score"))
-            (text-info (lsp-grammarly--get-text-info state))
-            (scores (lsp-grammarly--get-scores state)))
-       (message
-        (concat
-         (format "[User] %s (%s)" username (if is-premium "Premium" "Free"))
-         (format "\n[Text Score] %s out of 100" score)
-         (when text-info
-           (format "\n[Text-Info] Readability: %s, C: %s, W: %s"
-                   (nth 2 text-info) (nth 0 text-info) (nth 1 text-info)))
-         (when scores
-           (format "\nClarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
-                   (nth 0 scores) (nth 1 scores) (nth 2 scores) (nth 3 scores) (nth 4 scores)))))))))
+     (message
+      (concat
+       (let* ((user (ht-get state "user"))
+              (is-premium (ht-get user "isPremium"))
+              (_is-anonymous (ht-get user "isAnonymous"))
+              (username (ht-get user "username")))
+         (format "[User] %s (%s)" username (if is-premium "Premium" "Free")))
+       (when-let ((score (ht-get state "score")))
+         (format "\n[Text Score] %s out of 100" score))
+       (when-let* ((text-info (ht-get state "textInfo"))
+                   (chars-count (ht-get text-info "charsCount"))
+                   (words-count (ht-get text-info "wordsCount"))
+                   (readability-score (ht-get text-info "readabilityScore")))
+         (format "\n[Text-Info] Readability: %s, C: %s, W: %s"
+                 readability-score chars-count words-count))
+       (when-let* ((scores (ht-get state "scores"))
+                   (clarity (ht-get scores "Clarity"))
+                   (tone (ht-get scores "Tone"))
+                   (correctness (ht-get scores "Correctness"))
+                   (general-score (ht-get scores "GeneralScore"))
+                   (engagement (ht-get scores "Engagement")))
+         (format "\nClarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
+                 (lsp-grammarly--scale-100 clarity)
+                 (lsp-grammarly--scale-100 tone)
+                 (lsp-grammarly--scale-100 correctness)
+                 (lsp-grammarly--scale-100 general-score)
+                 (lsp-grammarly--scale-100 engagement))))))))
 
 ;;
 ;; (@* "Login" )
