@@ -40,13 +40,13 @@
 
 List of commands interact with `language server` and `Grammarly.com`.
 
-| Commands                         | Description                                                            |
-|:---------------------------------|:-----------------------------------------------------------------------|
-| lsp-grammarly-login              | Login to Grammarly.com                                                 |
-| lsp-grammarly-logout             | Logout from Grammarly.com                                              |
-| lsp-grammarly-check-grammar      | Start grammarly check for currnet document (buffer)                    |
-| lsp-grammarly-stop               | Stop grammarly checker from current document (buffer)                  |
-| lsp-grammarly-get-document-state | Log out current document status, `score`, `readability`, `words count`, etc. |
+| Commands                    | Description                                                                  |
+|:----------------------------|:-----------------------------------------------------------------------------|
+| lsp-grammarly-login         | Login to Grammarly.com                                                       |
+| lsp-grammarly-logout        | Logout from Grammarly.com                                                    |
+| lsp-grammarly-check-grammar | Start grammarly check for currnet document (buffer)                          |
+| lsp-grammarly-stop          | Stop grammarly checker from current document (buffer)                        |
+| lsp-grammarly-stats         | Log out current document status, `score`, `readability`, `words count`, etc. |
 
 ## :wrench: Configuration
 
