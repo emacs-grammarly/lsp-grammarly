@@ -26,3 +26,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 * Added login/logout capability
 * Added support for the premium version
+
+## 0.1.1
+> Released Mar 8, 2021
+
+* Shorten splitter
+
+## 0.1.0
+> Released Feb 21, 2021
+
+* Initial release
