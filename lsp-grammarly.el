@@ -137,7 +137,7 @@ This is only for development use."
 
 (defun lsp-grammarly--scale-100 (score)
   "Convert SCORE to the scale of 100 instead of scale of 1."
-  (* score 100))
+  (ignore-errors (* score 100)))
 
 (defun lsp-grammarly--random-bytes (n)
   "Return random bytes up to N."
