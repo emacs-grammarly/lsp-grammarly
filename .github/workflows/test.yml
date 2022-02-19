@@ -7,10 +7,11 @@ on:
   pull_request:
 
 jobs:
-    unix-test:
-        runs-on: ubuntu-latest
+    test-unix:
+        runs-on: ${{ matrix.os }}
         strategy:
             matrix:
+                os: [ubuntu-latest, macos-latest]
                 emacs-version:
                     - 27.2
                     - snapshot
@@ -31,14 +32,34 @@ jobs:
               with:
                   version: 'snapshot'
 
-            - name: Setup cmake
-              uses: jwlawson/actions-setup-cmake@v1.4
-              with:
-                 cmake-version: '3.18.x'
+            - name: Run tests
+              run:
+                make ci
 
-            - name: Check cmake
-              run: "cmake --version"
+    test-windows:
+        runs-on: windows-latest
+        strategy:
+            matrix:
+                emacs-version:
+                    - 27.2
+                    - snapshot
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - uses: actions/setup-python@v2
+              with:
+                  python-version: "3.6"
+                  architecture: "x64"
+
+            - uses: jcs090218/setup-emacs-windows@master
+              with:
+                  version: ${{ matrix.emacs-version }}
+
+            - uses: cask/setup-cask@master
+              with:
+                  version: 'snapshot'
 
             - name: Run tests
               run:
-                make unix-ci
+                make ci
