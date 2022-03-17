@@ -1,14 +1,17 @@
-# ignore these directories.
+# ignore these directories
 /.git
 /recipes
-/_test
+/test
 
-# ignore generated files.
+# ignore generated files
 *.elc
 
 # cask packages
 .cask/
 dist/
+
+# eask packages
+/.eask
 
 # ignore video
 /video
