@@ -15,3 +15,5 @@ dist/
 
 # ignore video
 /video
+
+/_test
