@@ -1,6 +1,7 @@
 # ignore these directories
 /.git
 /recipes
+/_test
 
 # ignore generated files
 *.elc
