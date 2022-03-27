@@ -5,13 +5,15 @@ EASK ?= eask
 
 TEST-FILES := $(shell ls test/lsp-grammarly-*.el)
 
-.PHONY: clean checkdoc lint install compile unix-test
+.PHONY: clean checkdoc lint package install compile unix-test
 
-ci: clean install compile
+ci: clean package install compile
 
-clean:
-	@echo "Cleaning..."
-	$(EASK) clean-all
+package:
+	@echo "Packaging..."
+	$(EASK) autoloads
+	$(EASK) pkg-file
+	$(EASK) package
 
 install:
 	@echo "Installing..."
@@ -21,10 +23,9 @@ compile:
 	@echo "Compiling..."
 	$(EASK) compile
 
-lint:
-	@echo "Linting..."
-	$(EASK) lint
-
 unix-test:
 	@echo "Testing..."
-	$(EASK) exec ert-runner -L . $(LOAD-TEST-FILES) -t '!no-win' -t '!org'
+	$(CASK) exec ert-runner -L . $(LOAD-TEST-FILES) -t '!no-win' -t '!org'
+
+clean:
+	rm -rf .cask *.elc
