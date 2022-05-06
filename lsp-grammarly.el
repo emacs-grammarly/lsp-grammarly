@@ -255,8 +255,8 @@ For argument CALLBACK, see object `lsp--client' description."
 
 (lsp-dependency 'grammarly-ls
                 '(:system "grammarly-ls")
-                '(:npm :package "@emacs-grammarly/unofficial-grammarly-language-server"
-                       :path "unofficial-grammarly-language-server"))
+                '(:npm :package "@emacs-grammarly/grammarly-languageserver"
+                       :path "grammarly-languageserver"))
 
 (lsp-register-client
  (make-lsp-client
