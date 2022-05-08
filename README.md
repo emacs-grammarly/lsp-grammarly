@@ -6,7 +6,7 @@
 
 [![CI](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/test.yml)
 
-`lsp-mode` client leveraging [unofficial-grammarly-language-server](https://github.com/znck/grammarly).
+`lsp-mode` client leveraging [grammarly-language-server](https://github.com/znck/grammarly).
 
 <p align="center"><img src="./etc/screenshot.png"/></p>
 
