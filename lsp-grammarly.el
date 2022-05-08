@@ -190,21 +190,104 @@ with a disability."
   :type 'boolean
   :group 'lsp-grammarly)
 
-(defcustom lsp-grammarly-suggestions-
+(defcustom lsp-grammarly-suggestions-possibly-biased-language-human-rights
   t
-  ""
+  "Suggests alternatives to language related to human slavery."
   :type 'boolean
   :group 'lsp-grammarly)
 
-(defcustom lsp-grammarly-suggestions-
+(defcustom lsp-grammarly-suggestions-possibly-biased-language-human-rights-related
   t
-  ""
+  "Suggests alternatives to terms with origins in the institution of slavery."
   :type 'boolean
   :group 'lsp-grammarly)
 
-(defcustom lsp-grammarly-suggestions-
+(defcustom lsp-grammarly-suggestions-possibly-biased-language-lgbtqia-related
   t
-  ""
+  "Flags LGBTQIA+-related terms that may be seen as biased, outdated, or
+disrespectful in some contexts."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-possibly-biased-language-race-ethnicity-related
+  t
+  "Suggests alternatives to potentially biased language related to race and
+ethnicity."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-possibly-politically-incorrect-language
+  t
+  "Suggests alternatives to language that may be considered politically
+incorrect."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-preposition-at-the-end-of-sentence
+  nil
+  "Flags use of prepositions such as 'with' and 'in' at the end of sentences."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-punctuation-with-quotation
+  t
+  "Suggests placing punctuation before closing quotation marks."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-readability-fillerwords
+  t
+  "Flags long, complicated sentences that could potentially confuse your reader."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-readability-transforms
+  t
+  "Suggests splitting long, complicated sentences that could potentially confuse
+your reader."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-sentence-variety
+  t
+  "Flags series of sentences that follow the same pattern."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-spaces-surrounding-slash
+  t
+  "Suggests removing extra spaces surrounding a slash."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-split-infinitive
+  t
+  "Suggests rewriting split infinitives so that an adverb doesn't come between
+'to' and the verb."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-stylistic-fragments
+  nil
+  "Suggests completing all incomplete sentences, including stylistic sentence fragments that may be intentional."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-unnecessary-ellipses
+  nil
+  "Flags unnecessary use of ellipses (...)."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-variety
+  t
+  "Suggests alternatives to words that occur frequently in the same paragraph."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-vocabulary
+  t
+  "Suggests alternatives to bland and overused words such as 'good' and 'nice'."
   :type 'boolean
   :group 'lsp-grammarly)
 
@@ -387,16 +470,25 @@ For argument CALLBACK, see object `lsp--client' description."
    ("grammarly.config.suggestions.PassiveVoice" lsp-grammarly-suggestions-passive-voice)
    ("grammarly.config.suggestions.PersonFirstLanguage" lsp-grammarly-suggestions-person-first-language)
    ("grammarly.config.suggestions.PossiblyBiasedLanguageAgeRelated" lsp-grammarly-suggestions-possibly-biased-language-age-related)
-   ("grammarly.config.suggestions.PossiblyBiasedLanguageDisabilityRelated" lsp-grammarly-suggestions-)
    ("grammarly.config.suggestions.PossiblyBiasedLanguageDisabilityRelated" lsp-grammarly-suggestions-possibly-biased-language-disability-related)
    ("grammarly.config.suggestions.PossiblyBiasedLanguageFamilyRelated" lsp-grammarly-suggestions-possibly-biased-language-family-related)
    ("grammarly.config.suggestions.PossiblyBiasedLanguageGenderRelated" lsp-grammarly-suggestions-possibly-biased-language-gender-related)
-   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)
-   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)
-   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)
-   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)
-   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)
-   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)))
+   ("grammarly.config.suggestions.PossiblyBiasedLanguageHumanRights" lsp-grammarly-suggestions-possibly-biased-language-human-rights)
+   ("grammarly.config.suggestions.PossiblyBiasedLanguageHumanRightsRelated" lsp-grammarly-suggestions-possibly-biased-language-human-rights-related)
+   ("grammarly.config.suggestions.PossiblyBiasedLanguageLgbtqiaRelated" lsp-grammarly-suggestions-possibly-biased-language-lgbtqia-related)
+   ("grammarly.config.suggestions.PossiblyBiasedLanguageRaceEthnicityRelated" lsp-grammarly-suggestions-possibly-biased-language-race-ethnicity-related)
+   ("grammarly.config.suggestions.PossiblyPoliticallyIncorrectLanguage" lsp-grammarly-suggestions-possibly-politically-incorrect-language)
+   ("grammarly.config.suggestions.PrepositionAtTheEndOfSentence" lsp-grammarly-suggestions-preposition-at-the-end-of-sentence)
+   ("grammarly.config.suggestions.PunctuationWithQuotation" lsp-grammarly-suggestions-punctuation-with-quotation)
+   ("grammarly.config.suggestions.ReadabilityFillerwords" lsp-grammarly-suggestions-readability-fillerwords)
+   ("grammarly.config.suggestions.ReadabilityTransforms" lsp-grammarly-suggestions-readability-transforms)
+   ("grammarly.config.suggestions.SentenceVariety" lsp-grammarly-suggestions-sentence-variety)
+   ("grammarly.config.suggestions.SpacesSurroundingSlash" lsp-grammarly-suggestions-spaces-surrounding-slash)
+   ("grammarly.config.suggestions.SplitInfinitive" lsp-grammarly-suggestions-split-infinitive)
+   ("grammarly.config.suggestions.StylisticFragments" lsp-grammarly-suggestions-stylistic-fragments)
+   ("grammarly.config.suggestions.UnnecessaryEllipses" lsp-grammarly-suggestions-unnecessary-ellipses)
+   ("grammarly.config.suggestions.Variety" lsp-grammarly-suggestions-variety)
+   ("grammarly.config.suggestions.Vocabulary" lsp-grammarly-suggestions-vocabulary)))
 
 (lsp-dependency 'grammarly-ls
                 '(:system "grammarly-ls")
