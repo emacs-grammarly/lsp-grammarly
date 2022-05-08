@@ -54,6 +54,7 @@ List of commands interact with `language server` and `Grammarly.com`.
 detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-settings).
 
 * `grammarly.patterns` via `lsp-grammarly-patterns`
+* `grammarly.selectors` via `lsp-grammarly-selectors`
 * `grammarly.audience` via `lsp-grammarly-audience`
 * `grammarly.dialect` via `lsp-grammarly-dialect`
 * `grammarly.domain` via `lsp-grammarly-domain`

@@ -58,14 +58,13 @@ This is only for development use."
   :type 'string
   :group 'lsp-grammarly)
 
-(define-obsolete-variable-alias
-  'lsp-grammarly-modes 'lsp-grammarly-active-modes "0.2.1")
-
 (defcustom lsp-grammarly-active-modes
   '(text-mode latex-mode org-mode markdown-mode)
   "List of major mode that work with Grammarly."
   :type 'list
   :group 'lsp-grammarly)
+(define-obsolete-variable-alias
+  'lsp-grammarly-modes 'lsp-grammarly-active-modes "0.2.1")
 
 (defcustom lsp-grammarly-patterns
   ["**/**.md"
