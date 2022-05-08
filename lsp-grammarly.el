@@ -258,14 +258,7 @@ For argument CALLBACK, see object `lsp--client' description."
 
 (lsp-register-custom-settings
  '(("grammarly.patterns" lsp-grammarly-patterns)
-   ("grammarly.selectors" lsp-grammarly-selectors)
-   ("grammarly.audience" lsp-grammarly-audience)
-   ("grammarly.dialect" lsp-grammarly-dialect)
-   ("grammarly.domain" lsp-grammarly-domain)
-   ("grammarly.emotions" lsp-grammarly-emotions)
-   ("grammarly.goals" lsp-grammarly-goals)
-   ("grammarly.userWords" lsp-grammarly-user-words)
-   ("grammarly.overrides" lsp-grammarly-override)))
+   ("grammarly.selectors" lsp-grammarly-selectors)))
 
 (lsp-dependency 'grammarly-ls
                 '(:system "grammarly-ls")
