@@ -5,6 +5,7 @@
 # lsp-grammarly
 
 [![CI](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/test.yml)
+[![Activate](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/activate.yml/badge.svg)](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/activate.yml)
 
 `lsp-mode` client leveraging [grammarly-language-server](https://github.com/znck/grammarly).
 
