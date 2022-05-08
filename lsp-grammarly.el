@@ -63,8 +63,6 @@ This is only for development use."
   "List of major mode that work with Grammarly."
   :type 'list
   :group 'lsp-grammarly)
-(define-obsolete-variable-alias
-  'lsp-grammarly-modes 'lsp-grammarly-active-modes "0.2.1")
 
 (defcustom lsp-grammarly-patterns
   ["**/**.md"
@@ -79,12 +77,6 @@ This is only for development use."
   :type 'vector
   :group 'lsp-grammarly)
 
-(defcustom lsp-grammarly-auto-activate t
-  "Enable Grammarly service when a supported document is opened."
-  :type 'boolean
-  :group 'lsp-grammarly)
-(make-obsolete-variable 'lsp-grammarly-auto-activate nil "0.2.2")
-
 (defcustom lsp-grammarly-audience "knowledgeable"
   "Sets the default audience for every document."
   :type '(choice (const "general")
@@ -97,7 +89,8 @@ This is only for development use."
   :type '(choice (const "american")
                  (const "australian")
                  (const "british")
-                 (const "canadian"))
+                 (const "canadian")
+                 (const "auto-text"))
   :group 'lsp-grammarly)
 
 (defcustom lsp-grammarly-domain "general"
@@ -110,28 +103,150 @@ This is only for development use."
                  (const "creative"))
   :group 'lsp-grammarly)
 
+(defcustom lsp-grammarly-suggestions-conjunction-at-start-of-sentence
+  nil
+  "Flags use of conjunctions such as 'but' and 'and' at the beginning of
+sentences."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-fluency
+  t
+  "Suggests ways to sound more natural and fluent."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-informal-pronouns-academic
+  nil
+  "Flags use of personal pronouns such as 'I' and 'you' in academic writing."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-missing-spaces
+  t
+  "Suggests adding missing spacing after a numeral when writing times."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-noun-strings
+  t
+  "Flags a series of nouns that modify a final noun."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-numbers-beginning-sentences
+  t
+  "Suggests spelling out numbers at the beginning of sentences."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-numbers-zero-through-ten
+  t
+  "Suggests spelling out numbers zero through ten."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-oxford-comma
+  nil
+  "Suggests adding the Oxford comma after the second-to-last item in a list of
+things."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-passive-voice
+  nil
+  "Flags use of passive voice."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-person-first-language
+  t
+  "Suggests using person-first language to refer respectfully to an individual
+with a disability."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-possibly-biased-language-age-related
+  t
+  "Suggests alternatives to potentially biased language related to older adults."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-possibly-biased-language-disability-related
+  t
+  "Suggests alternatives to potentially ableist language."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-possibly-biased-language-family-related
+  t
+  "Suggests alternatives to potentially biased language related to parenting and family systems."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-possibly-biased-language-gender-related
+  t
+  "Suggests alternatives to potentially gender-biased and non-inclusive phrasing."
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-
+  t
+  ""
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-
+  t
+  ""
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-suggestions-
+  t
+  ""
+  :type 'boolean
+  :group 'lsp-grammarly)
+
+(defvar lsp-grammarly--show-debug-message nil
+  "Flag to see if we show debug messages.")
+
+;;
+;; (@* "Obsolete" )
+;;
+
+(define-obsolete-variable-alias
+  'lsp-grammarly-modes 'lsp-grammarly-active-modes "0.2.1")
+
+(defcustom lsp-grammarly-auto-activate t
+  "Enable Grammarly service when a supported document is opened."
+  :type 'boolean
+  :group 'lsp-grammarly)
+(make-obsolete-variable 'lsp-grammarly-auto-activate nil "0.2.2")
+
 (defcustom lsp-grammarly-emotions '()
   "Experimental: How do you want to sound."
   :type 'list
   :group 'lsp-grammarly)
+(make-obsolete-variable 'lsp-grammarly-emotions nil "0.2.2")
 
 (defcustom lsp-grammarly-goals '()
   "Experimental: What are you trying to do."
   :type 'list
   :group 'lsp-grammarly)
+(make-obsolete-variable 'lsp-grammarly-goal nil "0.2.2")
 
 (defcustom lsp-grammarly-user-words '()
   "A list of words as a local dictionary."
   :type 'list
   :group 'lsp-grammarly)
+(make-obsolete-variable 'lsp-grammarly-user-words nil "0.2.2")
 
 (defcustom lsp-grammarly-override '()
   "Per document override for audience, dialect, domain, emotions and goals."
   :type 'list
   :group 'lsp-grammarly)
-
-(defvar lsp-grammarly--show-debug-message nil
-  "Flag to see if we show debug messages.")
+(make-obsolete-variable 'lsp-grammarly-override nil "0.2.2")
 
 ;;
 ;; (@* "External" )
@@ -258,7 +373,30 @@ For argument CALLBACK, see object `lsp--client' description."
 
 (lsp-register-custom-settings
  '(("grammarly.patterns" lsp-grammarly-patterns)
-   ("grammarly.selectors" lsp-grammarly-selectors)))
+   ("grammarly.selectors" lsp-grammarly-selectors)
+   ("grammarly.config.documentDialect" lsp-grammarly-dialect)
+   ("grammarly.config.documentDomain" lsp-grammarly-domain)
+   ("grammarly.config.suggestions.ConjunctionAtStartOfSentence" lsp-grammarly-suggestions-conjunction-at-start-of-sentence)
+   ("grammarly.config.suggestions.Fluency" lsp-grammarly-suggestions-fluency)
+   ("grammarly.config.suggestions.InformalPronounsAcademic" lsp-grammarly-suggestions-informal-pronouns-academic)
+   ("grammarly.config.suggestions.MissingSpaces" lsp-grammarly-suggestions-missing-spaces)
+   ("grammarly.config.suggestions.NounStrings" lsp-grammarly-suggestions-noun-strings)
+   ("grammarly.config.suggestions.NumbersBeginningSentences" lsp-grammarly-suggestions-numbers-beginning-sentences)
+   ("grammarly.config.suggestions.NumbersZeroThroughTen" lsp-grammarly-suggestions-numbers-zero-through-ten)
+   ("grammarly.config.suggestions.OxfordComma" lsp-grammarly-suggestions-oxford-comma)
+   ("grammarly.config.suggestions.PassiveVoice" lsp-grammarly-suggestions-passive-voice)
+   ("grammarly.config.suggestions.PersonFirstLanguage" lsp-grammarly-suggestions-person-first-language)
+   ("grammarly.config.suggestions.PossiblyBiasedLanguageAgeRelated" lsp-grammarly-suggestions-possibly-biased-language-age-related)
+   ("grammarly.config.suggestions.PossiblyBiasedLanguageDisabilityRelated" lsp-grammarly-suggestions-)
+   ("grammarly.config.suggestions.PossiblyBiasedLanguageDisabilityRelated" lsp-grammarly-suggestions-possibly-biased-language-disability-related)
+   ("grammarly.config.suggestions.PossiblyBiasedLanguageFamilyRelated" lsp-grammarly-suggestions-possibly-biased-language-family-related)
+   ("grammarly.config.suggestions.PossiblyBiasedLanguageGenderRelated" lsp-grammarly-suggestions-possibly-biased-language-gender-related)
+   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)
+   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)
+   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)
+   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)
+   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)
+   ("grammarly.config.suggestions." lsp-grammarly-suggestions-)))
 
 (lsp-dependency 'grammarly-ls
                 '(:system "grammarly-ls")

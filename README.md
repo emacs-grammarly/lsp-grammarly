@@ -55,13 +55,10 @@ detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-setti
 
 * `grammarly.patterns` via `lsp-grammarly-patterns`
 * `grammarly.selectors` via `lsp-grammarly-selectors`
-* `grammarly.audience` via `lsp-grammarly-audience`
-* `grammarly.dialect` via `lsp-grammarly-dialect`
-* `grammarly.domain` via `lsp-grammarly-domain`
-* `grammarly.emotions` via `lsp-grammarly-emotions`
-* `grammarly.goals` via `lsp-grammarly-goals`
-* `grammarly.userWords` via `lsp-grammarly-user-words`
-* `grammarly.overrides` via `lsp-grammarly-override`
+* `grammarly.config.documentDialect` via `lsp-grammarly-dialect`
+* `grammarly.config.documentDomain` via `lsp-grammarly-domain`
+* `grammarly.config.suggestions.ConjunctionAtStartOfSentence` via `lsp-grammarly-suggestions.conjunction-at-start-of-sentence`
+* `` via ``
 
 ## :pencil: Roadmap
 
