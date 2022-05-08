@@ -67,10 +67,24 @@ This is only for development use."
   :type 'list
   :group 'lsp-grammarly)
 
+(defcustom lsp-grammarly-patterns
+  ["**/**.md"
+   "**/*.txt"]
+  "A glob pattern, like `*.{md,txt}` for file scheme."
+  :type 'vector
+  :group 'lsp-grammarly)
+
+(defcustom lsp-grammarly-selectors
+  []
+  "Filter documents to be checked with Grammarly."
+  :type 'vector
+  :group 'lsp-grammarly)
+
 (defcustom lsp-grammarly-auto-activate t
   "Enable Grammarly service when a supported document is opened."
   :type 'boolean
   :group 'lsp-grammarly)
+(make-obsolete-variable 'lsp-grammarly-auto-activate nil "0.2.2")
 
 (defcustom lsp-grammarly-audience "knowledgeable"
   "Sets the default audience for every document."
@@ -92,7 +106,7 @@ This is only for development use."
   :type '(choice (const "academic")
                  (const "business")
                  (const "general")
-                 (const "technical")
+                 (const "mail")
                  (const "casual")
                  (const "creative"))
   :group 'lsp-grammarly)
@@ -244,7 +258,8 @@ For argument CALLBACK, see object `lsp--client' description."
       (list (lsp-package-path 'grammarly-ls) "--stdio")))
 
 (lsp-register-custom-settings
- '(("grammarly.autoActivate" lsp-grammarly-auto-activate t)
+ '(("grammarly.patterns" lsp-grammarly-patterns)
+   ("grammarly.selectors" lsp-grammarly-selectors)
    ("grammarly.audience" lsp-grammarly-audience)
    ("grammarly.dialect" lsp-grammarly-dialect)
    ("grammarly.domain" lsp-grammarly-domain)

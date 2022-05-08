@@ -53,7 +53,7 @@ List of commands interact with `language server` and `Grammarly.com`.
 `lsp-grammarly` supports following configuration. Each configuration is described in
 detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-settings).
 
-* `grammarly.autoActivate` via `lsp-grammarly-auto-activate`
+* `grammarly.patterns` via `lsp-grammarly-patterns`
 * `grammarly.audience` via `lsp-grammarly-audience`
 * `grammarly.dialect` via `lsp-grammarly-dialect`
 * `grammarly.domain` via `lsp-grammarly-domain`
