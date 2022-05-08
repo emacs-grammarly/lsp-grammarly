@@ -14,19 +14,19 @@
 **Table of Contents**
 
 - [lsp-grammarly](#lsp-grammarly)
-    - [:floppy_disk: Quickstart](#floppy_disk-quickstart)
-    - [:card_index: Commands](#card_index-commands)
-    - [:wrench: Configuration](#wrench-configuration)
-    - [:pencil: Roadmap](#pencil-roadmap)
-    - [:money_with_wings: Using a Paid Grammarly Account](#money_with_wings-using-a-paid-grammarly-account)
-        - [:mag: Method 1: Login with VSCode (easier)](#mag-method-1-login-with-vscode-easier)
-        - [:mag: Method 2: Login with Emacs (a bit complicated)](#mag-method-2-login-with-emacs-a-bit-complicated)
+    - [💾 Quickstart](#💾-quickstart)
+    - [📇 Commands](#📇-commands)
+    - [🔧 Configuration](#🔧-configuration)
+    - [📝 Roadmap](#📝-roadmap)
+    - [💸 Using a Paid Grammarly Account](#💸-using-a-paid-grammarly-account)
+        - [🔍 Method 1: Login with VSCode (easier)](#🔍-method-1-login-with-vscode-easier)
+        - [🔍 Method 2: Login with Emacs (a bit complicated)](#🔍-method-2-login-with-emacs-a-bit-complicated)
         - [Authentication from Grammarly website](#authentication-from-grammarly-website)
-    - [Contribution](#contribution)
+    - [Contribute](#contribute)
 
 <!-- markdown-toc end -->
 
-## :floppy_disk: Quickstart
+## 💾 Quickstart
 
 ```el
 (use-package lsp-grammarly
@@ -36,7 +36,7 @@
                        (lsp))))  ; or lsp-deferred
 ```
 
-## :card_index: Commands
+## 📇 Commands
 
 List of commands interact with `language server` and `Grammarly.com`.
 
@@ -48,7 +48,7 @@ List of commands interact with `language server` and `Grammarly.com`.
 | lsp-grammarly-stop          | Stop grammarly checker from current document (buffer)                        |
 | lsp-grammarly-stats         | Log out current document status, `score`, `readability`, `words count`, etc. |
 
-## :wrench: Configuration
+## 🔧 Configuration
 
 `lsp-grammarly` supports following configuration. Each configuration is described in
 detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-settings).
@@ -62,7 +62,7 @@ detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-setti
 * `grammarly.userWords` via `lsp-grammarly-user-words`
 * `grammarly.overrides` via `lsp-grammarly-override`
 
-## :pencil: Roadmap
+## 📝 Roadmap
 
 List of todos, but I have not got time to implement these features.
 
@@ -71,7 +71,7 @@ List of todos, but I have not got time to implement these features.
 - [ ] Implement command `Ignore Grammarly Issue`.
 - [ ] Implement `diagnostics` and `severity` for configuration.
 
-## :money_with_wings: Using a Paid Grammarly Account
+## 💸 Using a Paid Grammarly Account
 
 > ***NOTE:** To login, make sure you have package [keytar](https://github.com/emacs-grammarly/keytar)
 set up properly. See [keytar#installation](https://github.com/emacs-grammarly/keytar#installation)
@@ -81,7 +81,7 @@ You can either login with [vscode-grammarly](https://marketplace.visualstudio.co
 using VSCode or hit `M-x lsp-grammarly-login`. They both share the same credentials
 so you can login with either side.
 
-### :mag: Method 1: Login with VSCode (easier)
+### 🔍 Method 1: Login with VSCode (easier)
 
 Install VSCode and install extension [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
 from the extension panel.
@@ -98,10 +98,10 @@ login with your Grammarly account.
 
 <p align="center"><img src="./etc/login/open-app-vscode.png"/></p>
 
-:tada: Make sure you click on the button `Open Visual Studio Code`. Done! You
+🎉 Make sure you click on the button `Open Visual Studio Code`. Done! You
 can now close VSCode and go back to Emacs!
 
-### :mag: Method 2: Login with Emacs (a bit complicated)
+### 🔍 Method 2: Login with Emacs (a bit complicated)
 
 Hit `M-x lsp-grammarly-login` and you should see the Grammarly's website pop out
 from your favorite browser. See below [screenshot](#authentication-from-grammarly-website),
@@ -120,8 +120,7 @@ Copy and paste the URI back to Emacs and hit return.
 
 <p align="center"><img src="./etc/login/emacs-paste.png"/></p>
 
-
-:tada: Done! Now you should be loggin!
+🎉 Done! Now you should be loggin!
 
 ### Authentication from Grammarly website
 
