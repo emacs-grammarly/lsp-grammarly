@@ -3,8 +3,6 @@ SHELL := /usr/bin/env bash
 EMACS ?= emacs
 EASK ?= eask
 
-TEST-FILES := $(shell ls test/lsp-grammarly-*.el)
-
 .PHONY: clean checkdoc lint package install compile test
 
 ci: clean package install compile
@@ -27,3 +25,7 @@ test:
 
 clean:
 	rm -rf .eask *.elc
+
+activate:
+	$(EASK) install --dev
+	$(EASK) load ./test/activate.el
