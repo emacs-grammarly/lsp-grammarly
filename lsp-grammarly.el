@@ -180,7 +180,8 @@ with a disability."
 
 (defcustom lsp-grammarly-suggestions-possibly-biased-language-family-related
   t
-  "Suggests alternatives to potentially biased language related to parenting and family systems."
+  "Suggests alternatives to potentially biased language related to parenting and
+family systems."
   :type 'boolean
   :group 'lsp-grammarly)
 
@@ -269,7 +270,8 @@ your reader."
 
 (defcustom lsp-grammarly-suggestions-stylistic-fragments
   nil
-  "Suggests completing all incomplete sentences, including stylistic sentence fragments that may be intentional."
+  "Suggests completing all incomplete sentences, including stylistic sentence
+fragments that may be intentional."
   :type 'boolean
   :group 'lsp-grammarly)
 
