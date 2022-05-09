@@ -7,7 +7,7 @@
 [![CI](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/test.yml)
 [![Activate](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/activate.yml/badge.svg)](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/activate.yml)
 
-`lsp-mode` client leveraging [grammarly-language-server](https://github.com/znck/grammarly).
+`lsp-mode` client leveraging [grammarly-language-server](https://github.com/emacs-grammarly/grammarly-language-server).
 
 <p align="center"><img src="./etc/screenshot.png"/></p>
 
@@ -51,7 +51,7 @@ List of commands interact with `language server` and `Grammarly.com`.
 ## 🔧 Configuration
 
 `lsp-grammarly` supports following configuration. Each configuration is described in
-detail in [Grammarly Settings](https://github.com/emacs-grammarly/unofficial-grammarly-language-server#extension-settings).
+detail in [Grammarly Extension Settings](https://github.com/emacs-grammarly/grammarly-language-server/blob/main/extension/package.json).
 
 * `grammarly.patterns` via `lsp-grammarly-patterns`
 * `grammarly.selectors` via `lsp-grammarly-selectors`
