@@ -53,42 +53,40 @@ List of commands interact with `language server` and `Grammarly.com`.
 `lsp-grammarly` supports following configuration. Each configuration is described in
 detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-settings).
 
-| Properties                                                                | Variables                                                                   |
-|---------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| `grammarly.patterns`                                                      | `lsp-grammarly-patterns`                                                    |
-| `grammarly.selectors`                                                     | `lsp-grammarly-selectors`                                                   |
-| `grammarly.config.documentDialect`                                        | `lsp-grammarly-dialect`                                                     |
-| `grammarly.config.documentDomain`                                         | `lsp-grammarly-domain`                                                      |
-| `grammarly.config.suggestions.ConjunctionAtStartOfSentence`               | `lsp-grammarly-suggestions-conjunction-at-start-of-sentence`                |
-| `grammarly.config.suggestions.Fluency`                                    | `lsp-grammarly-suggestions-fluency`                                         |
-| `grammarly.config.suggestions.InformalPronounsAcademic`                   | `lsp-grammarly-suggestions-informal-pronouns-academic`                      |
-| `grammarly.config.suggestions.MissingSpaces`                              | `lsp-grammarly-suggestions-missing-spaces`                                  |
-| `grammarly.config.suggestions.NounStrings`                                | `lsp-grammarly-suggestions-noun-strings`                                    |
-| `grammarly.config.suggestions.NumbersBeginningSentences`                  | `lsp-grammarly-suggestions-numbers-beginning-sentences`                     |
-| `grammarly.config.suggestions.NumbersZeroThroughTen`                      | `lsp-grammarly-suggestions-numbers-zero-through-ten`                        |
-| `grammarly.config.suggestions.OxfordComma`                                | `lsp-grammarly-suggestions-oxford-comma`                                    |
-| `grammarly.config.suggestions.PassiveVoice`                               | `lsp-grammarly-suggestions-passive-voice`                                   |
-| `grammarly.config.suggestions.PersonFirstLanguage`                        | `lsp-grammarly-suggestions-person-first-language`                           |
-| `grammarly.config.suggestions.PossiblyBiasedLanguageAgeRelated`           | `lsp-grammarly-suggestions-possibly-biased-language-age-related`            |
-| `grammarly.config.suggestions.PossiblyBiasedLanguageDisabilityRelated`    | `lsp-grammarly-suggestions-possibly-biased-language-disability-related`     |
-| `grammarly.config.suggestions.PossiblyBiasedLanguageFamilyRelated`        | `lsp-grammarly-suggestions-possibly-biased-language-family-related`         |
-| `grammarly.config.suggestions.PossiblyBiasedLanguageGenderRelated`        | `lsp-grammarly-suggestions-possibly-biased-language-gender-related`         |
-| `grammarly.config.suggestions.PossiblyBiasedLanguageHumanRights`          | `lsp-grammarly-suggestions-possibly-biased-language-human-rights`           |
-| `grammarly.config.suggestions.PossiblyBiasedLanguageHumanRightsRelated`   | `lsp-grammarly-suggestions-possibly-biased-language-human-rights-related`   |
-| `grammarly.config.suggestions.PossiblyBiasedLanguageLgbtqiaRelated`       | `lsp-grammarly-suggestions-possibly-biased-language-lgbtqia-related`        |
-| `grammarly.config.suggestions.PossiblyBiasedLanguageRaceEthnicityRelated` | `lsp-grammarly-suggestions-possibly-biased-language-race-ethnicity-related` |
-| `grammarly.config.suggestions.PossiblyPoliticallyIncorrectLanguage`       | `lsp-grammarly-suggestions-possibly-politically-incorrect-language`         |
-| `grammarly.config.suggestions.PrepositionAtTheEndOfSentence`              | `lsp-grammarly-suggestions-preposition-at-the-end-of-sentence`              |
-| `grammarly.config.suggestions.PunctuationWithQuotation`                   | `lsp-grammarly-suggestions-punctuation-with-quotation`                      |
-| `grammarly.config.suggestions.ReadabilityFillerwords`                     | `lsp-grammarly-suggestions-readability-fillerwords`                         |
-| `grammarly.config.suggestions.ReadabilityTransforms`                      | `lsp-grammarly-suggestions-readability-transforms`                          |
-| `grammarly.config.suggestions.SentenceVariety`                            | `lsp-grammarly-suggestions-sentence-variety`                                |
-| `grammarly.config.suggestions.SpacesSurroundingSlash`                     | `lsp-grammarly-suggestions-spaces-surrounding-slash`                        |
-| `grammarly.config.suggestions.SplitInfinitive`                            | `lsp-grammarly-suggestions-split-infinitive`                                |
-| `grammarly.config.suggestions.StylisticFragments`                         | `lsp-grammarly-suggestions-stylistic-fragments`                             |
-| `grammarly.config.suggestions.UnnecessaryEllipses`                        | `lsp-grammarly-suggestions-unnecessary-ellipses`                            |
-| `grammarly.config.suggestions.Variety`                                    | `lsp-grammarly-suggestions-variety`                                         |
-| `grammarly.config.suggestions.Vocabulary`                                 | `lsp-grammarly-suggestions-vocabulary`                                      |
+* `grammarly.patterns` via `lsp-grammarly-patterns`
+* `grammarly.selectors` via `lsp-grammarly-selectors`
+* `grammarly.config.documentDialect` via `lsp-grammarly-dialect`
+* `grammarly.config.documentDomain` via `lsp-grammarly-domain`
+* `grammarly.config.suggestions.ConjunctionAtStartOfSentence` via `lsp-grammarly-suggestions-conjunction-at-start-of-sentence`
+* `grammarly.config.suggestions.Fluency` via `lsp-grammarly-suggestions-fluency`
+* `grammarly.config.suggestions.InformalPronounsAcademic` via `lsp-grammarly-suggestions-informal-pronouns-academic`
+* `grammarly.config.suggestions.MissingSpaces` via `lsp-grammarly-suggestions-missing-spaces`
+* `grammarly.config.suggestions.NounStrings` via `lsp-grammarly-suggestions-noun-strings`
+* `grammarly.config.suggestions.NumbersBeginningSentences` via `lsp-grammarly-suggestions-numbers-beginning-sentences`
+* `grammarly.config.suggestions.NumbersZeroThroughTen` via `lsp-grammarly-suggestions-numbers-zero-through-ten`
+* `grammarly.config.suggestions.OxfordComma` via `lsp-grammarly-suggestions-oxford-comma`
+* `grammarly.config.suggestions.PassiveVoice` via `lsp-grammarly-suggestions-passive-voice`
+* `grammarly.config.suggestions.PersonFirstLanguage` via `lsp-grammarly-suggestions-person-first-language`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageAgeRelated` via `lsp-grammarly-suggestions-possibly-biased-language-age-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageDisabilityRelated` via `lsp-grammarly-suggestions-possibly-biased-language-disability-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageFamilyRelated` via `lsp-grammarly-suggestions-possibly-biased-language-family-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageGenderRelated` via `lsp-grammarly-suggestions-possibly-biased-language-gender-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageHumanRights` via `lsp-grammarly-suggestions-possibly-biased-language-human-rights`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageHumanRightsRelated` via `lsp-grammarly-suggestions-possibly-biased-language-human-rights-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageLgbtqiaRelated` via `lsp-grammarly-suggestions-possibly-biased-language-lgbtqia-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageRaceEthnicityRelated` via `lsp-grammarly-suggestions-possibly-biased-language-race-ethnicity-related`
+* `grammarly.config.suggestions.PossiblyPoliticallyIncorrectLanguage` via `lsp-grammarly-suggestions-possibly-politically-incorrect-language`
+* `grammarly.config.suggestions.PrepositionAtTheEndOfSentence` via `lsp-grammarly-suggestions-preposition-at-the-end-of-sentence`
+* `grammarly.config.suggestions.PunctuationWithQuotation` via `lsp-grammarly-suggestions-punctuation-with-quotation`
+* `grammarly.config.suggestions.ReadabilityFillerwords` via `lsp-grammarly-suggestions-readability-fillerwords`
+* `grammarly.config.suggestions.ReadabilityTransforms` via `lsp-grammarly-suggestions-readability-transforms`
+* `grammarly.config.suggestions.SentenceVariety` via `lsp-grammarly-suggestions-sentence-variety`
+* `grammarly.config.suggestions.SpacesSurroundingSlash` via `lsp-grammarly-suggestions-spaces-surrounding-slash`
+* `grammarly.config.suggestions.SplitInfinitive` via `lsp-grammarly-suggestions-split-infinitive`
+* `grammarly.config.suggestions.StylisticFragments` via `lsp-grammarly-suggestions-stylistic-fragments`
+* `grammarly.config.suggestions.UnnecessaryEllipses` via `lsp-grammarly-suggestions-unnecessary-ellipses`
+* `grammarly.config.suggestions.Variety` via `lsp-grammarly-suggestions-variety`
+* `grammarly.config.suggestions.Vocabulary` via `lsp-grammarly-suggestions-vocabulary`
 
 ## 📝 Roadmap
 
