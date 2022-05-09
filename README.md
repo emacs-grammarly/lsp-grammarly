@@ -5,8 +5,9 @@
 # lsp-grammarly
 
 [![CI](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/test.yml)
+[![Activate](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/activate.yml/badge.svg)](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/activate.yml)
 
-`lsp-mode` client leveraging [unofficial-grammarly-language-server](https://github.com/emacs-grammarly/unofficial-grammarly-language-server).
+`lsp-mode` client leveraging [grammarly-language-server](https://github.com/emacs-grammarly/grammarly-language-server).
 
 <p align="center"><img src="./etc/screenshot.png"/></p>
 
@@ -18,10 +19,6 @@
     - [📇 Commands](#📇-commands)
     - [🔧 Configuration](#🔧-configuration)
     - [📝 Roadmap](#📝-roadmap)
-    - [💸 Using a Paid Grammarly Account](#💸-using-a-paid-grammarly-account)
-        - [🔍 Method 1: Login with VSCode (easier)](#🔍-method-1-login-with-vscode-easier)
-        - [🔍 Method 2: Login with Emacs (a bit complicated)](#🔍-method-2-login-with-emacs-a-bit-complicated)
-        - [Authentication from Grammarly website](#authentication-from-grammarly-website)
     - [Contribute](#contribute)
 
 <!-- markdown-toc end -->
@@ -38,6 +35,9 @@
 
 ## 📇 Commands
 
+> ⚠️ We are moving to the newer grammarly-language-server that uses the official
+> API. Some features are disabled for now, but we will later add them back.
+
 List of commands interact with `language server` and `Grammarly.com`.
 
 | Commands                    | Description                                                                  |
@@ -51,16 +51,42 @@ List of commands interact with `language server` and `Grammarly.com`.
 ## 🔧 Configuration
 
 `lsp-grammarly` supports following configuration. Each configuration is described in
-detail in [Grammarly Settings](https://github.com/emacs-grammarly/unofficial-grammarly-language-server#extension-settings).
+detail in [Grammarly Extension Settings](https://github.com/emacs-grammarly/grammarly-language-server/blob/main/extension/package.json).
 
-* `grammarly.autoActivate` via `lsp-grammarly-auto-activate`
-* `grammarly.audience` via `lsp-grammarly-audience`
-* `grammarly.dialect` via `lsp-grammarly-dialect`
-* `grammarly.domain` via `lsp-grammarly-domain`
-* `grammarly.emotions` via `lsp-grammarly-emotions`
-* `grammarly.goals` via `lsp-grammarly-goals`
-* `grammarly.userWords` via `lsp-grammarly-user-words`
-* `grammarly.overrides` via `lsp-grammarly-override`
+* `grammarly.patterns` via `lsp-grammarly-patterns`
+* `grammarly.selectors` via `lsp-grammarly-selectors`
+* `grammarly.config.documentDialect` via `lsp-grammarly-dialect`
+* `grammarly.config.documentDomain` via `lsp-grammarly-domain`
+* `grammarly.config.suggestions.ConjunctionAtStartOfSentence` via `lsp-grammarly-suggestions-conjunction-at-start-of-sentence`
+* `grammarly.config.suggestions.Fluency` via `lsp-grammarly-suggestions-fluency`
+* `grammarly.config.suggestions.InformalPronounsAcademic` via `lsp-grammarly-suggestions-informal-pronouns-academic`
+* `grammarly.config.suggestions.MissingSpaces` via `lsp-grammarly-suggestions-missing-spaces`
+* `grammarly.config.suggestions.NounStrings` via `lsp-grammarly-suggestions-noun-strings`
+* `grammarly.config.suggestions.NumbersBeginningSentences` via `lsp-grammarly-suggestions-numbers-beginning-sentences`
+* `grammarly.config.suggestions.NumbersZeroThroughTen` via `lsp-grammarly-suggestions-numbers-zero-through-ten`
+* `grammarly.config.suggestions.OxfordComma` via `lsp-grammarly-suggestions-oxford-comma`
+* `grammarly.config.suggestions.PassiveVoice` via `lsp-grammarly-suggestions-passive-voice`
+* `grammarly.config.suggestions.PersonFirstLanguage` via `lsp-grammarly-suggestions-person-first-language`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageAgeRelated` via `lsp-grammarly-suggestions-possibly-biased-language-age-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageDisabilityRelated` via `lsp-grammarly-suggestions-possibly-biased-language-disability-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageFamilyRelated` via `lsp-grammarly-suggestions-possibly-biased-language-family-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageGenderRelated` via `lsp-grammarly-suggestions-possibly-biased-language-gender-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageHumanRights` via `lsp-grammarly-suggestions-possibly-biased-language-human-rights`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageHumanRightsRelated` via `lsp-grammarly-suggestions-possibly-biased-language-human-rights-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageLgbtqiaRelated` via `lsp-grammarly-suggestions-possibly-biased-language-lgbtqia-related`
+* `grammarly.config.suggestions.PossiblyBiasedLanguageRaceEthnicityRelated` via `lsp-grammarly-suggestions-possibly-biased-language-race-ethnicity-related`
+* `grammarly.config.suggestions.PossiblyPoliticallyIncorrectLanguage` via `lsp-grammarly-suggestions-possibly-politically-incorrect-language`
+* `grammarly.config.suggestions.PrepositionAtTheEndOfSentence` via `lsp-grammarly-suggestions-preposition-at-the-end-of-sentence`
+* `grammarly.config.suggestions.PunctuationWithQuotation` via `lsp-grammarly-suggestions-punctuation-with-quotation`
+* `grammarly.config.suggestions.ReadabilityFillerwords` via `lsp-grammarly-suggestions-readability-fillerwords`
+* `grammarly.config.suggestions.ReadabilityTransforms` via `lsp-grammarly-suggestions-readability-transforms`
+* `grammarly.config.suggestions.SentenceVariety` via `lsp-grammarly-suggestions-sentence-variety`
+* `grammarly.config.suggestions.SpacesSurroundingSlash` via `lsp-grammarly-suggestions-spaces-surrounding-slash`
+* `grammarly.config.suggestions.SplitInfinitive` via `lsp-grammarly-suggestions-split-infinitive`
+* `grammarly.config.suggestions.StylisticFragments` via `lsp-grammarly-suggestions-stylistic-fragments`
+* `grammarly.config.suggestions.UnnecessaryEllipses` via `lsp-grammarly-suggestions-unnecessary-ellipses`
+* `grammarly.config.suggestions.Variety` via `lsp-grammarly-suggestions-variety`
+* `grammarly.config.suggestions.Vocabulary` via `lsp-grammarly-suggestions-vocabulary`
 
 ## 📝 Roadmap
 
@@ -68,66 +94,6 @@ List of todos, but I have not got time to implement these features.
 
 - [ ] Create another package that displays information from [Grammarly.com](https://www.grammarly.com/)
 (To display useful information, `score`, `readability`, `word counts`, etc).
-- [ ] Implement command `Ignore Grammarly Issue`.
-- [ ] Implement `diagnostics` and `severity` for configuration.
-
-## 💸 Using a Paid Grammarly Account
-
-> ***NOTE:** To login, make sure you have package [keytar](https://github.com/emacs-grammarly/keytar)
-set up properly. See [keytar#installation](https://github.com/emacs-grammarly/keytar#installation)
-for setup instruction.*
-
-You can either login with [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
-using VSCode or hit `M-x lsp-grammarly-login`. They both share the same credentials
-so you can login with either side.
-
-### 🔍 Method 1: Login with VSCode (easier)
-
-Install VSCode and install extension [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
-from the extension panel.
-
-<p align="center"><img src="./etc/login/vscode-grammarly-extension.png"/></p>
-
-Then call command palette (default to <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>p</kbd>)
-and type to search `grammarly login` command.
-
-<p align="center"><img src="./etc/login/vscode-grammarly-login.png"/></p>
-
-You should see [Grammarly Website](#authentication-from-grammarly-website) and
-login with your Grammarly account.
-
-<p align="center"><img src="./etc/login/open-app-vscode.png"/></p>
-
-🎉 Make sure you click on the button `Open Visual Studio Code`. Done! You
-can now close VSCode and go back to Emacs!
-
-### 🔍 Method 2: Login with Emacs (a bit complicated)
-
-Hit `M-x lsp-grammarly-login` and you should see the Grammarly's website pop out
-from your favorite browser. See below [screenshot](#authentication-from-grammarly-website),
-
-After login, click the button `Open URL:vscode`, If you have VSCode installed, then
-this button would be `Open Visual Studio Code` instead yet it doesn't matter.
-
-<p align="center"><img src="./etc/login/open-url-vscode.png"/></p>
-
-Then click <kbd>F12</kbd> to open the DevTool window. You should able to see
-an URI like the following
-
-<p align="center"><img src="./etc/login/external-handler.png"/></p>
-
-Copy and paste the URI back to Emacs and hit return.
-
-<p align="center"><img src="./etc/login/emacs-paste.png"/></p>
-
-🎉 Done! Now you should be loggin!
-
-### Authentication from Grammarly website
-
-Login with your Grammarly account (This step does not require VSCode to be
-installed)!
-
-<p align="center"><img src="./etc/login/grammarly-website.png"/></p>
 
 ## Contribute
 
