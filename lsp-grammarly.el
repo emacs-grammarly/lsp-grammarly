@@ -58,6 +58,9 @@ This is only for development use."
   :type 'string
   :group 'lsp-grammarly)
 
+(define-obsolete-variable-alias
+  'lsp-grammarly-modes 'lsp-grammarly-active-modes "0.2.1")
+
 (defcustom lsp-grammarly-active-modes
   '(text-mode latex-mode org-mode markdown-mode)
   "List of major mode that work with Grammarly."
@@ -299,9 +302,6 @@ fragments that may be intentional."
 ;;
 ;; (@* "Obsolete" )
 ;;
-
-(define-obsolete-variable-alias
-  'lsp-grammarly-modes 'lsp-grammarly-active-modes "0.2.1")
 
 (defcustom lsp-grammarly-auto-activate t
   "Enable Grammarly service when a supported document is opened."
