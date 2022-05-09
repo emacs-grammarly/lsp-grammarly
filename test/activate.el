@@ -31,33 +31,28 @@
 
 (lsp-install-server t 'grammarly-ls)  ; Start installation
 
-(cl-defun lsp--npm-dependency-path (&key package path &allow-other-keys)
-  "Return npm dependency PATH for PACKAGE."
-  (message "? %s" (f-join lsp-server-install-dir "npm" package
-                          (cond ((eq system-type 'windows-nt) "")
-                                (t "bin"))
-                          path))
-  (let ((path (executable-find
-               (f-join lsp-server-install-dir "npm" package
-                       (cond ((eq system-type 'windows-nt) "")
-                             (t "bin"))
-                       path))))
-    (unless (and path (f-exists? path))
-      (error "The package %s is not installed.  Unable to find %s" package path))
-    path))
-
 (defconst timeout 180
   "Timeout in seconds.")
 
 (defvar timer 0)
 
+(defun get-lsp-install-buffer ()
+  ""
+  (nth 0
+       (cl-remove-if-not (lambda (buf)
+                           (string-prefix-p "*lsp-install:" (buffer-name buf)))
+                         (buffer-list))))
+
+(with-current-buffer (get-lsp-install-buffer)
+  (while (not (string-match-p "^Comint" (thing-at-point 'line)))
+    (goto-char (point-max))
+    (forward-line -1)
+    (sit-for 5)
+    (cl-incf timer 5)
+    (message "Waited %s..." timer)))
+
 (defconst server-install-path (lsp-package-path 'grammarly-ls)
   "The server install location.")
-
-(while (not (file-exists-p server-install-path))
-  (sit-for 5)
-  (cl-incf timer 5)
-  (message "Waited %s..." timer))
 
 (unless (file-exists-p server-install-path)
   (error "Failed to install server: %s" server-install-path)
