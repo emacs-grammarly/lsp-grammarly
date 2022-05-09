@@ -33,15 +33,12 @@
 
 (cl-defun lsp--npm-dependency-path (&key package path &allow-other-keys)
   "Return npm dependency PATH for PACKAGE."
+  (message "? %s" path)
   (let ((path (executable-find
                (f-join lsp-server-install-dir "npm" package
                        (cond ((eq system-type 'windows-nt) "")
                              (t "bin"))
                        path))))
-    (message "? %s" (f-join lsp-server-install-dir "npm" package
-                            (cond ((eq system-type 'windows-nt) "")
-                                  (t "bin"))
-                            path))
     (unless (and path (f-exists? path))
       (error "The package %s is not installed.  Unable to find %s" package path))
     path))
