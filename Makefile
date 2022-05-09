@@ -5,7 +5,7 @@ EASK ?= eask
 
 .PHONY: clean checkdoc lint package install compile test
 
-ci: clean package install compile
+ci: clean package install compile checkdoc lint
 
 package:
 	@echo "Packaging..."
@@ -21,7 +21,15 @@ compile:
 
 test:
 	@echo "Testing..."
-	$(EASK) exec ert-runner -L . $(LOAD-TEST-FILES) -t '!no-win' -t '!org'
+	$(EASK) ert ./test/*.el
+
+checkdoc:
+	@echo "Run checkdoc..."
+	$(EASK) checkdoc
+
+lint:
+	@echo "Run package-lint..."
+	$(EASK) lint
 
 clean:
 	rm -rf .eask *.elc

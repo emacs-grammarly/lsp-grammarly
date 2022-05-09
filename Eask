@@ -1,5 +1,5 @@
 (package "lsp-grammarly"
-         "0.2.2"
+         "0.3.0"
          "LSP Clients for Grammarly")
 
 (package-file "lsp-grammarly.el")
