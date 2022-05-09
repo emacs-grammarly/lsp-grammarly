@@ -35,6 +35,9 @@
 
 ## 📇 Commands
 
+> ⚠️ We are moving to the newer grammarly-language-server that uses the
+> officail API, hence some feature will be missing for now.
+
 List of commands interact with `language server` and `Grammarly.com`.
 
 | Commands                    | Description                                                                  |
