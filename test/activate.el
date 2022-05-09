@@ -38,7 +38,10 @@
                        (cond ((eq system-type 'windows-nt) "")
                              (t "bin"))
                        path))))
-    (message "? %s" path)
+    (message "? %s" (f-join lsp-server-install-dir "npm" package
+                            (cond ((eq system-type 'windows-nt) "")
+                                  (t "bin"))
+                            path))
     (unless (and path (f-exists? path))
       (error "The package %s is not installed.  Unable to find %s" package path))
     path))
