@@ -363,15 +363,6 @@ fragments that may be intentional."
 ;; (@* "Login" )
 ;;
 
-(defconst lsp-grammarly--cookie-key "vscode-grammarly-cookie"
-  "Key to store credentials.")
-
-(defconst lsp-grammarly--account "default"
-  "Key that Grammarly LSP default to.")
-
-(defvar lsp-grammarly--password-string nil
-  "Encrypted password in string.")
-
 (defvar lsp-grammarly--password nil
   "Encrypted password in alist.")
 
@@ -497,17 +488,17 @@ For argument CALLBACK, see object `lsp--client' description."
 (defun lsp-grammarly-check-grammar ()
   "Start the Grammarly checker."
   (interactive)
-  (user-error "[INFO] This command is currently disabled"))
+  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
 
 (defun lsp-grammarly-stop ()
   "Stop the Grammarly checker."
   (interactive)
-  (user-error "[INFO] This command is currently disabled"))
+  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
 
 (defun lsp-grammarly-stats ()
   "Return document state."
   (interactive)
-  (user-error "[INFO] This command is currently disabled"))
+  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
 
 ;;
 ;; (@* "Login" )
@@ -516,12 +507,12 @@ For argument CALLBACK, see object `lsp--client' description."
 (defun lsp-grammarly-login ()
   "Login to Grammarly.com."
   (interactive)
-  (user-error "[INFO] This command is currently disabled"))
+  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
 
 (defun lsp-grammarly-logout ()
   "Logout from Grammarly.com."
   (interactive)
-  (user-error "[INFO] This command is currently disabled"))
+  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
 
 (provide 'lsp-grammarly)
 ;;; lsp-grammarly.el ends here
