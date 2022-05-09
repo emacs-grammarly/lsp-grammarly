@@ -37,7 +37,7 @@
 (defvar timer 0)
 
 (defun get-lsp-install-buffer ()
-  ""
+  "Get lsp-insall buffer."
   (nth 0
        (cl-remove-if-not (lambda (buf)
                            (string-prefix-p "*lsp-install:" (buffer-name buf)))
