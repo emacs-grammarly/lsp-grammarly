@@ -51,7 +51,7 @@ List of commands interact with `language server` and `Grammarly.com`.
 ## 🔧 Configuration
 
 `lsp-grammarly` supports following configuration. Each configuration is described in
-detail in [Grammarly Settings](https://github.com/znck/grammarly#extension-settings).
+detail in [Grammarly Settings](https://github.com/emacs-grammarly/unofficial-grammarly-language-server#extension-settings).
 
 * `grammarly.patterns` via `lsp-grammarly-patterns`
 * `grammarly.selectors` via `lsp-grammarly-selectors`
