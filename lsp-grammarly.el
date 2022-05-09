@@ -41,9 +41,6 @@
 (require 'ht)
 (require 'json)
 
-(unless (require 'keytar nil t)
-  (warn "`keytar' is required for login into Grammarly account"))
-
 (defgroup lsp-grammarly nil
   "Settings for the Grammarly Language Server.
 
@@ -334,15 +331,6 @@ fragments that may be intentional."
 (make-obsolete-variable 'lsp-grammarly-override nil "0.3.0")
 
 ;;
-;; (@* "External" )
-;;
-
-(declare-function keytar--check "ext:keytar.el")
-(declare-function keytar-set-password "ext:keytar.el")
-(declare-function keytar-get-password "ext:keytar.el")
-(declare-function keytar-delete-password "ext:keytar.el")
-
-;;
 ;; (@* "Util" )
 ;;
 
@@ -361,10 +349,6 @@ fragments that may be intentional."
     (with-temp-buffer
       (dotimes (_ n) (insert (elt charset (random baseCount))))
       (buffer-string))))
-
-(defun lsp-grammarly--json-encode (obj)
-  "Wrap function `json-encode' to convert OBJ for keytar password."
-  (s-replace "\"" "\\\"" (json-encode obj)))
 
 (defun lsp-grammarly--json-read (string)
   "Ensure read JSON STRING avoid bad string format."
@@ -415,20 +399,12 @@ For argument CALLBACK, see object `lsp--client' description."
 
 (defun lsp-grammarly--store-token (_workspace _uri _callback &rest _)
   "Save the token once."
-  (keytar-set-password
-   lsp-grammarly--cookie-key lsp-grammarly--account lsp-grammarly--password-string))
+  )
 
 (defun lsp-grammarly--init (&rest _)
   "Get Grammarly API ready."
-  (unless (lsp-grammarly-login-p)
-    (let ((pass (ignore-errors
-                  (keytar-get-password lsp-grammarly--cookie-key lsp-grammarly--account))))
-      (when pass
-        (setq lsp-grammarly--password-string pass
-              lsp-grammarly--password (lsp-grammarly--json-read pass))))
-    (if (lsp-grammarly-login-p)
-        (message "[INFO] Logged in as, %s" (lsp-grammarly--username))
-      (message "[INFO] Visited as, anonymous"))))
+  ;; TODO: wait for the server side implementation
+  )
 
 (defun lsp-grammarly--show-error (_workspace _uri callback &rest _)
   "Show error from language server.
@@ -521,178 +497,31 @@ For argument CALLBACK, see object `lsp--client' description."
 (defun lsp-grammarly-check-grammar ()
   "Start the Grammarly checker."
   (interactive)
-  (lsp-request-async
-   "$/checkGrammar" `(:uri ,(lsp--buffer-uri))
-   (lambda (_) (message "Start Grammarly checker..."))))
+  (user-error "[INFO] This command is currently disabled"))
 
 (defun lsp-grammarly-stop ()
   "Stop the Grammarly checker."
   (interactive)
-  (lsp-request-async
-   "$/stop" `(:uri ,(lsp--buffer-uri))
-   (lambda (_) (message "Stop Grammarly checker..."))))
+  (user-error "[INFO] This command is currently disabled"))
 
 (defun lsp-grammarly-stats ()
   "Return document state."
   (interactive)
-  (lsp-request-async
-   "$/getDocumentState" `(:uri ,(lsp--buffer-uri))
-   (lambda (state)
-     (message
-      (concat
-       (let* ((user (ht-get state "user"))
-              (is-premium (ht-get user "isPremium"))
-              (_is-anonymous (ht-get user "isAnonymous"))
-              (username (ht-get user "username")))
-         (format "[User] %s (%s)" username (if is-premium "Premium" "Free")))
-       (when-let ((score (ht-get state "score")))
-         (format "\n[Text Score] %s out of 100" score))
-       (when-let* ((text-info (ht-get state "textInfo"))
-                   (chars-count (ht-get text-info "charsCount"))
-                   (words-count (ht-get text-info "wordsCount"))
-                   (readability-score (ht-get text-info "readabilityScore")))
-         (format "\n[Text-Info] Readability: %s, C: %s, W: %s"
-                 readability-score chars-count words-count))
-       (when-let* ((scores (ht-get state "scores"))
-                   (clarity (ht-get scores "Clarity"))
-                   (tone (ht-get scores "Tone"))
-                   (correctness (ht-get scores "Correctness"))
-                   (general-score (ht-get scores "GeneralScore"))
-                   (engagement (ht-get scores "Engagement")))
-         (format "\nClarity: %s, Tone: %s, Correctness: %s, GeneralScore: %s, Engagement: %s"
-                 (lsp-grammarly--scale-100 clarity)
-                 (lsp-grammarly--scale-100 tone)
-                 (lsp-grammarly--scale-100 correctness)
-                 (lsp-grammarly--scale-100 general-score)
-                 (lsp-grammarly--scale-100 engagement))))))))
+  (user-error "[INFO] This command is currently disabled"))
 
 ;;
 ;; (@* "Login" )
 ;;
 
-(defvar lsp-grammarly--code-verifier nil "Login information, code verifier.")
-(defvar lsp-grammarly--challenge nil "Login information, challenge.")
-
-(defconst lsp-grammarly-client-id "extensionVSCode"
-  "Key for URI scheme.")
-
-(defun lsp-grammarly--resolve-uri (uri)
-  "Handle URI for authentication."
-  (let ((prefix "vscode://znck.grammarly/auth/callback?") query)
-    (if (not (string-prefix-p prefix uri))
-        (user-error "[WARNING] An URL should start with prefix: %s" prefix)
-      (setq uri (s-replace prefix "" uri)
-            query (url-parse-query-string uri))
-      (nth 1 (assoc "code" query)))))
-
-(defun lsp-grammarly--update-cookie ()
-  "Refresh the Grammarly.com cookie once."
-  (grammarly--form-cookie)
-  `((csrf-token . ,(grammarly--get-cookie-by-name "csrf-token"))
-    (grauth . ,(grammarly--get-cookie-by-name "grauth"))
-    (gnar-containerId . ,(grammarly--get-cookie-by-name "gnar_containerId"))
-    (tdi . ,(grammarly--get-cookie-by-name "tdi"))))
-
-(defun lsp-grammarly--uri-callback ()
-  "Callback after resolving URI.
-
-Argument CODE is the query string from URI."
-  (let* ((uri (read-string "[Grammarly Authentication] code: "))
-         (code (lsp-grammarly--resolve-uri uri))
-         cookie csrf-token grauth gnar-containerId tdi)
-    (request
-      (format "https://auth.grammarly.com/v3/user/oranonymous?app=%s" lsp-grammarly-client-id)
-      :type "GET"
-      :headers
-      `(("x-client-type". ,lsp-grammarly-client-id)
-        ("x-client-version" . "0.0.0"))
-      :success
-      (cl-function
-       (lambda (&key _response _data &allow-other-keys)
-         (setq cookie (lsp-grammarly--update-cookie)
-               csrf-token (cdr (assoc 'csrf-token cookie))
-               grauth (cdr (assoc 'grauth cookie))
-               gnar-containerId (cdr (assoc 'gnar-containerId cookie)))
-         (request
-           "https://auth.grammarly.com/v3/api/unified-login/code/exchange"
-           :type "POST"
-           :headers
-           `(("Accept" . "application/json")
-             ("Content-Type" . "application/json")
-             ("x-client-type" . ,lsp-grammarly-client-id)
-             ("x-client-version" . "0.0.0")
-             ("x-csrf-token" . ,csrf-token)
-             ("x-container-id" . ,gnar-containerId)
-             ("cookie" . ,(format "grauth=%s; csrf-token=%s" grauth csrf-token)))
-           :data
-           (json-encode
-            `(("client_id" . ,lsp-grammarly-client-id)
-              ("code" . ,code)
-              ("code_verifier" . ,lsp-grammarly--code-verifier)))
-           :success
-           (cl-function
-            (lambda (&key _response data &allow-other-keys)
-              (setq cookie (lsp-grammarly--update-cookie)
-                    csrf-token (cdr (assoc 'csrf-token cookie))
-                    grauth (cdr (assoc 'grauth cookie))
-                    gnar-containerId (cdr (assoc 'gnar-containerId cookie))
-                    tdi (cdr (assoc 'tdi cookie)))
-              (let* ((all-data (lsp-grammarly--json-read data))
-                     (user (nth 0 all-data))
-                     (premium (string= "Premium" (cdr (assoc 'type user))))
-                     (name (cdr (assoc 'name user)))
-                     (email (cdr (assoc 'email user)))
-                     (token (format "grauth=%s;csrf-token=%s;tdi=%s;" grauth csrf-token tdi))
-                     (auth-info `(("isAnonymous" . :json-false)
-                                  ("isPremium" . ,premium)
-                                  ("token" . ,token)
-                                  ("username" . ,email))))
-                (keytar-set-password
-                 lsp-grammarly--cookie-key lsp-grammarly--account
-                 (lsp-grammarly--json-encode auth-info))
-                ;; TODO: This is slow, need to improve the performance for better
-                ;; user experience.
-                (ignore-errors (lsp-workspace-restart nil))
-                (message "[INFO] Logged in as `%s`" name))))
-           :error
-           (cl-function
-            (lambda (&rest args &key _error-thrown &allow-other-keys)
-              (lsp-grammarly--message "[ERROR] Error while authenticating login: %s" args))))))
-      :error
-      (cl-function
-       (lambda (&rest args &key _error-thrown &allow-other-keys)
-         (lsp-grammarly--message "[ERROR] Error while getting cookie: %s" args))))))
-
 (defun lsp-grammarly-login ()
   "Login to Grammarly.com."
   (interactive)
-  (keytar--check)
-  (if (lsp-grammarly-login-p)
-      (message "[INFO] You are already logged in with `%s`" (lsp-grammarly--username))
-    (setq lsp-grammarly--code-verifier
-          (base64url-encode-string (lsp-grammarly--random-bytes 96) t)
-          lsp-grammarly--challenge
-          (base64url-encode-string (secure-hash 'sha256 lsp-grammarly--code-verifier nil nil t) t))
-    (browse-url (format
-                 "https://grammarly.com/signin/app?client_id=%s&code_challenge=%s"
-                 lsp-grammarly-client-id lsp-grammarly--challenge))
-    (lsp-grammarly--uri-callback)))
+  (user-error "[INFO] This command is currently disabled"))
 
 (defun lsp-grammarly-logout ()
   "Logout from Grammarly.com."
   (interactive)
-  (keytar--check)
-  (if (not (lsp-grammarly-login-p))
-      (message "[INFO] You are already logout from Grammarly.com")
-    (if (keytar-delete-password lsp-grammarly--cookie-key lsp-grammarly--account)
-        (progn
-          (setq lsp-grammarly--password nil
-                lsp-grammarly--password-string nil)
-          ;; TODO: This is slow, need to improve the performance for better
-          ;; user experience.
-          (ignore-errors (lsp-workspace-restart nil))
-          (message "[INFO] Logged out of Grammarly.com"))
-      (message "[ERROR] Failed to logout from Grammarly.com"))))
+  (user-error "[INFO] This command is currently disabled"))
 
 (provide 'lsp-grammarly)
 ;;; lsp-grammarly.el ends here
