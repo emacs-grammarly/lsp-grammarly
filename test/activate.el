@@ -28,7 +28,6 @@
 (eask-pkg-init)
 
 (require 'lsp-mode)
-(require 'lsp-grammarly)
 
 (lsp-install-server t 'grammarly-ls)  ; Start installation
 
