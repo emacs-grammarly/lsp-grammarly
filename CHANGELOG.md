@@ -4,11 +4,16 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-
-## 0.2.3 (Unreleased)
+## 0.3.1 (Unreleased)
 > Released N/A
 
+* N/A
+
+## 0.3.0
+> Released May 9, 2022
+
 * Allowed `textInfo` being `null` when getting document stats
+* Migrate to use the new server (#31)
 
 ## 0.2.2
 > Released Apr 04, 2021
