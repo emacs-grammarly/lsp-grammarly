@@ -6,7 +6,7 @@
 ;; Author: Shen, Jen-Chieh <jcs090218@gmail.com>
 ;; Description: LSP Clients for Grammarly.
 ;; Keyword: lsp grammarly checker
-;; Version: 0.2.2
+;; Version: 0.3.0
 ;; Package-Requires: ((emacs "27.1") (lsp-mode "6.1") (grammarly "0.3.0") (request "0.3.0") (s "1.12.0") (ht "2.3"))
 ;; URL: https://github.com/emacs-grammarly/lsp-grammarly
 
@@ -313,25 +313,25 @@ fragments that may be intentional."
   "Experimental: How do you want to sound."
   :type 'list
   :group 'lsp-grammarly)
-(make-obsolete-variable 'lsp-grammarly-emotions nil "0.2.2")
+(make-obsolete-variable 'lsp-grammarly-emotions nil "0.3.0")
 
 (defcustom lsp-grammarly-goals '()
   "Experimental: What are you trying to do."
   :type 'list
   :group 'lsp-grammarly)
-(make-obsolete-variable 'lsp-grammarly-goal nil "0.2.2")
+(make-obsolete-variable 'lsp-grammarly-goal nil "0.3.0")
 
 (defcustom lsp-grammarly-user-words '()
   "A list of words as a local dictionary."
   :type 'list
   :group 'lsp-grammarly)
-(make-obsolete-variable 'lsp-grammarly-user-words nil "0.2.2")
+(make-obsolete-variable 'lsp-grammarly-user-words nil "0.3.0")
 
 (defcustom lsp-grammarly-override '()
   "Per document override for audience, dialect, domain, emotions and goals."
   :type 'list
   :group 'lsp-grammarly)
-(make-obsolete-variable 'lsp-grammarly-override nil "0.2.2")
+(make-obsolete-variable 'lsp-grammarly-override nil "0.3.0")
 
 ;;
 ;; (@* "External" )
