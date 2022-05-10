@@ -32,7 +32,7 @@ lint:
 	$(EASK) lint
 
 clean:
-	rm -rf .eask *.elc
+	$(EASK) clean-all
 
 activate:
 	$(EASK) install --dev
