@@ -417,6 +417,9 @@ For argument CALLBACK, see object `lsp--client' description."
 ;; (@* "Server" )
 ;;
 
+(defconst lsp-grammarly-client-id "client_BaDkMgx4X19X9UxxYRCXZo"
+  "Client ID is required for language server's activation.")
+
 (defun lsp-grammarly--server-command ()
   "Generate startup command for Grammarly language server."
   (or (and lsp-grammarly-server-path
@@ -467,6 +470,9 @@ For argument CALLBACK, see object `lsp--client' description."
 (lsp-register-client
  (make-lsp-client
   :new-connection (lsp-stdio-connection #'lsp-grammarly--server-command)
+  :initialization-options
+  `((clientId . ,lsp-grammarly-client-id)
+    (name . "Grammarly"))
   :activation-fn (lambda (&rest _) (apply #'derived-mode-p lsp-grammarly-active-modes))
   :priority -1
   :add-on? t
