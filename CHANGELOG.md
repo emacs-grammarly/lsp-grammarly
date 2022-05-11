@@ -7,7 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## 0.3.1 (Unreleased)
 > Released N/A
 
-* N/A
+* Add initialize options (#33)
 
 ## 0.3.0
 > Released May 9, 2022
