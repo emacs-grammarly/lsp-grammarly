@@ -127,9 +127,8 @@ can now close VSCode and go back to Emacs!
 
 ### 🔍 Method 2: Login with Emacs (a bit complicated)
 
-> ⚠️ This method is no longer working, please login with VSCode! (method 1)
->
-> This is currently WIP.
+> ⚠️ This method is no longer working with the new language server and currently
+> WIP, please login with VSCode!
 
 Hit `M-x lsp-grammarly-login` and you should see the Grammarly's website pop out
 from your favorite browser. See below [screenshot](#authentication-from-grammarly-website),
