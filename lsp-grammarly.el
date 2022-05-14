@@ -555,7 +555,7 @@ Argument CODE is the query string from URI."
    (lambda (connected)
      (if connected (message "[INFO] You are already logged in")
        (let* ((internal-redirect-uri "vscode://znck.grammarly/auth/callback")
-              (external-redirect-uri "vscode://znck.grammarly/auth/callback")
+              (external-redirect-uri "vscode://znck.grammarly/auth/callback?windowId%3D25")
               (redirect-uri
                (if (string= internal-redirect-uri external-redirect-uri)
                    internal-redirect-uri
