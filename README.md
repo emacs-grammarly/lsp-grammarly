@@ -101,10 +101,6 @@ List of todos, but I have not got time to implement these features.
 
 ## 💸 Using a Paid Grammarly Account
 
-> ***NOTE:** To login, make sure you have package [keytar](https://github.com/emacs-grammarly/keytar)
-set up properly. See [keytar#installation](https://github.com/emacs-grammarly/keytar#installation)
-for setup instruction.*
-
 You can either login with [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
 using VSCode or hit `M-x lsp-grammarly-login`. They both share the same credentials
 so you can login with either side.
@@ -130,6 +126,10 @@ login with your Grammarly account.
 can now close VSCode and go back to Emacs!
 
 ### 🔍 Method 2: Login with Emacs (a bit complicated)
+
+> ⚠️ This method is no longer working, please login with VSCode! (method 1)
+>
+> This is currently WIP.
 
 Hit `M-x lsp-grammarly-login` and you should see the Grammarly's website pop out
 from your favorite browser. See below [screenshot](#authentication-from-grammarly-website),
