@@ -442,20 +442,42 @@ For argument CALLBACK, see object `lsp--client' description."
 ;; (@* "Commands" )
 ;;
 
-(defun lsp-grammarly-check-grammar ()
-  "Start the Grammarly checker."
-  (interactive)
-  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
+(define-obsolete-function-alias 'lsp-grammarly-check-grammar 'lsp-grammarly-resume "0.3.1")
+(define-obsolete-function-alias 'lsp-grammarly-stop 'lsp-grammarly-pause "0.3.1")
 
-(defun lsp-grammarly-stop ()
-  "Stop the Grammarly checker."
+(defun lsp-grammarly-resume ()
+  "Resume the Grammarly checker."
   (interactive)
-  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
+  (lsp-request-async
+   "$/resume" `(:uri ,(lsp--buffer-uri))
+   (lambda (_) (message "Resume Grammarly checker."))))
+
+(defun lsp-grammarly-pause ()
+  "Pause the Grammarly checker."
+  (interactive)
+  (lsp-request-async
+   "$/pause" `(:uri ,(lsp--buffer-uri))
+   (lambda (_) (message "Pause Grammarly checker..."))))
+
+(defun lsp-grammarly-dismiss ()
+  "Dismiss suggestions."
+  (interactive)
+  (lsp-request-async
+   "$/dismissSuggestion" `(:uri ,(lsp--buffer-uri) :suggestionId ,())
+   (lambda (_)
+     ;; TODO: ..
+     (user-error "[INFO] Currently WIP")
+     )))
 
 (defun lsp-grammarly-stats ()
   "Return document state."
   (interactive)
-  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
+  (lsp-request-async
+   "$/getDocumentStatus" `(:uri ,(lsp--buffer-uri))
+   (lambda (_state)
+     ;; TODO: ..
+     (user-error "[INFO] Currently WIP")
+     )))
 
 ;;
 ;; (@* "Login" )
@@ -520,7 +542,9 @@ Argument CODE is the query string from URI."
                                           (concat "state=" to-base64-url)
                                           url)))
             (browse-url url)
-            (lsp-grammarly--uri-callback))))))))
+            ;; TODO: ..
+            ;;(lsp-grammarly--uri-callback)
+            )))))))
 
 (defun lsp-grammarly-logout ()
   "Logout from Grammarly.com."
