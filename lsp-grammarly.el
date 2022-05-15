@@ -32,6 +32,7 @@
 
 ;;; Code:
 
+(require 'json)
 (require 'subr-x)
 
 (require 'lsp-mode)
@@ -39,7 +40,6 @@
 (require 'request)
 (require 's)
 (require 'ht)
-(require 'json)
 
 (defgroup lsp-grammarly nil
   "Settings for the Grammarly Language Server.
