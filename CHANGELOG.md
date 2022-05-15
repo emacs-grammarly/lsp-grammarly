@@ -4,10 +4,12 @@ All notable changes to this project will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+
 ## 0.3.1 (Unreleased)
 > Released N/A
 
 * Add initialize options (#33)
+* Add login/logout commands back (#34)
 
 ## 0.3.0
 > Released May 9, 2022
