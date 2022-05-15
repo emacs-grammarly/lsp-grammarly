@@ -39,7 +39,9 @@
 
 ## 📇 Commands
 
-> ⚠️ We are moving to the newer grammarly-language-server that uses the official
+> ⚠️ Warning
+> 
+> We are moving to the newer grammarly-language-server that uses the official
 > API. Some features are disabled for now, but we will later add them back.
 
 List of commands interact with `language server` and `Grammarly.com`.
@@ -127,7 +129,9 @@ can now close VSCode and go back to Emacs!
 
 ### 🔍 Method 2: Login with Emacs (a bit complicated)
 
-> ⚠️ This method is no longer working with the new language server and currently
+> ⚠️ Warning
+> 
+> This method is no longer working with the new language server and currently
 > WIP, please login with VSCode!
 
 Hit `M-x lsp-grammarly-login` and you should see the Grammarly's website pop out
