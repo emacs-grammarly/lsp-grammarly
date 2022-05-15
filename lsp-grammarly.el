@@ -32,6 +32,7 @@
 
 ;;; Code:
 
+(require 'json)
 (require 'subr-x)
 
 (require 'lsp-mode)
@@ -39,7 +40,6 @@
 (require 'request)
 (require 's)
 (require 'ht)
-(require 'json)
 
 (defgroup lsp-grammarly nil
   "Settings for the Grammarly Language Server.
@@ -342,55 +342,9 @@ fragments that may be intentional."
   "Convert SCORE to the scale of 100 instead of scale of 1."
   (ignore-errors (* score 100)))
 
-(defun lsp-grammarly--random-bytes (n)
-  "Return random bytes up to N."
-  (let* ((charset "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
-         (baseCount (length charset)))
-    (with-temp-buffer
-      (dotimes (_ n) (insert (elt charset (random baseCount))))
-      (buffer-string))))
-
-(defun lsp-grammarly--json-read (string)
-  "Ensure read JSON STRING avoid bad string format."
-  (let ((output (or (ignore-errors (json-read-from-string string))
-                    (ignore-errors (json-read-from-string (concat "\"" string "\""))))))
-    ;; After avoiding bad string format, we need to read json once again.
-    (when (stringp output)
-      (setq output (ignore-errors (json-read-from-string output))))
-    output))
-
 ;;
-;; (@* "Login" )
+;; (@* "Handlers" )
 ;;
-
-(defvar lsp-grammarly--password nil
-  "Encrypted password in alist.")
-
-(defun lsp-grammarly-login-p ()
-  "Return non-nil if currently logged in to Grammarly.com."
-  lsp-grammarly--password)
-
-(defun lsp-grammarly--username ()
-  "Return the currently login username."
-  (when lsp-grammarly--password
-    (or (ignore-errors (cdr (assoc 'username lsp-grammarly--password)))
-        (ignore-errors (ht-get lsp-grammarly--password "username")))))
-
-(defun lsp-grammarly--get-credentials (_workspace _uri callback &rest _)
-  "Return the credentials from native password manager.
-
-For argument CALLBACK, see object `lsp--client' description."
-  (funcall callback nil))
-
-(defun lsp-grammarly--get-token (_workspace _uri callback &rest _)
-  "Return the token from variable `lsp-grammarly--password'.
-
-For argument CALLBACK, see object `lsp--client' description."
-  (funcall callback lsp-grammarly--password))
-
-(defun lsp-grammarly--store-token (_workspace _uri _callback &rest _)
-  "Save the token once."
-  )
 
 (defun lsp-grammarly--init (&rest _)
   "Get Grammarly API ready."
@@ -481,44 +435,123 @@ For argument CALLBACK, see object `lsp--client' description."
                         (lsp-package-ensure 'grammarly-ls callback error-callback))
   :after-open-fn #'lsp-grammarly--init
   :async-request-handlers
-  (ht ("$/getCredentials" #'lsp-grammarly--get-credentials)
-      ("$/getToken" #'lsp-grammarly--get-token)
-      ("$/storeToken" #'lsp-grammarly--store-token)
-      ("$/showError" #'lsp-grammarly--show-error)
+  (ht ("$/showError" #'lsp-grammarly--show-error)
       ("$/updateDocumentState" #'lsp-grammarly--update-document-state))))
 
 ;;
 ;; (@* "Commands" )
 ;;
 
-(defun lsp-grammarly-check-grammar ()
-  "Start the Grammarly checker."
-  (interactive)
-  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
+(define-obsolete-function-alias 'lsp-grammarly-check-grammar 'lsp-grammarly-resume "0.3.1")
+(define-obsolete-function-alias 'lsp-grammarly-stop 'lsp-grammarly-pause "0.3.1")
 
-(defun lsp-grammarly-stop ()
-  "Stop the Grammarly checker."
+(defun lsp-grammarly-resume ()
+  "Resume the Grammarly checker."
   (interactive)
-  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
+  (lsp-request-async
+   "$/resume" `(:uri ,(lsp--buffer-uri))
+   (lambda (_) (message "Resume Grammarly checker."))))
+
+(defun lsp-grammarly-pause ()
+  "Pause the Grammarly checker."
+  (interactive)
+  (lsp-request-async
+   "$/pause" `(:uri ,(lsp--buffer-uri))
+   (lambda (_) (message "Pause Grammarly checker..."))))
+
+(defun lsp-grammarly-dismiss ()
+  "Dismiss suggestions."
+  (interactive)
+  (lsp-request-async
+   "$/dismissSuggestion" `(:uri ,(lsp--buffer-uri) :suggestionId ,())
+   (lambda (_)
+     ;; TODO: ..
+     (user-error "[INFO] Currently WIP")
+     )))
 
 (defun lsp-grammarly-stats ()
   "Return document state."
   (interactive)
-  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
+  (lsp-request-async
+   "$/getDocumentStatus" `(:uri ,(lsp--buffer-uri))
+   (lambda (_state)
+     ;; TODO: ..
+     (user-error "[INFO] Currently WIP")
+     )))
 
 ;;
 ;; (@* "Login" )
 ;;
 
+(defun lsp-grammarly-connected-p (&optional callback)
+  "Print account connectivity."
+  (interactive)
+  (lsp-request-async
+   "$/isUserAccountConnected" nil
+   (lambda (connected &rest _)
+     (when callback (funcall callback connected)))))
+
+(defun lsp-grammarly--get-oauth-url (redirect-uri callback)
+  "Get OAuth url and execute CALLBACK."
+  (lsp-request-async
+   "$/getOAuthUrl" `(:oauthRedirectUri ,redirect-uri)
+   callback))
+
+(defun lsp-grammarly--resolve-uri (uri)
+  "Handle URI for authentication."
+  (let ((prefix "vscode://znck.grammarly/auth/callback?") query)
+    (if (not (string-prefix-p prefix uri))
+        (user-error "[WARNING] An URL should start with prefix: %s" prefix)
+      (setq uri (s-replace prefix "" uri)
+            query (url-parse-query-string uri))
+      (nth 1 (assoc "code" query)))))
+
+(defun lsp-grammarly--uri-callback ()
+  "Callback after resolving URI.
+
+Argument CODE is the query string from URI."
+  (let* ((uri (read-string "[Grammarly Authentication] code: "))
+         (code (lsp-grammarly--resolve-uri uri)))
+    (lsp-request-async
+     "$/handleOAuthCallbackUri" `(:url ,code)
+     (lambda (&rest _)
+       (lsp-grammarly-connected-p
+        (lambda (connected &rest _)
+          (if connected
+              (message "Account connected.")
+            (message "Unexpected URI: %s" uri))))))))
+
 (defun lsp-grammarly-login ()
   "Login to Grammarly.com."
   (interactive)
-  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
+  (lsp-grammarly-connected-p
+   (lambda (connected)
+     (if connected (message "[INFO] You are already logged in")
+       (let* ((window-id (format "%s" (emacs-pid)))
+              (internal-redirect-uri "vscode://znck.grammarly/auth/callback")
+              (external-redirect-uri (concat internal-redirect-uri "?windowId=" window-id))
+              (redirect-uri
+               (if (string= internal-redirect-uri external-redirect-uri)
+                   internal-redirect-uri
+                 "https://vscode-extension-grammarly.netlify.app/.netlify/functions/redirect")))
+         (lsp-grammarly--get-oauth-url
+          redirect-uri
+          (lambda (url &rest _)
+            (let ((to-base64-url (base64url-encode-string external-redirect-uri t)))
+              (setq url (s-replace-regexp "state=[^&]*"
+                                          (concat "state=" to-base64-url)
+                                          url)))
+            (browse-url url)
+            ;; TODO: ..
+            ;;(lsp-grammarly--uri-callback)
+            )))))))
 
 (defun lsp-grammarly-logout ()
   "Logout from Grammarly.com."
   (interactive)
-  (user-error "[INFO] This command is currently disabled, and it will be added back in the later version"))
+  (lsp-request-async
+   "$/logout" nil
+   (lambda (&rest _) (message "Logged out."))))
 
 (provide 'lsp-grammarly)
 ;;; lsp-grammarly.el ends here
