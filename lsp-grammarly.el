@@ -459,16 +459,6 @@ For argument CALLBACK, see object `lsp--client' description."
    "$/pause" `(:uri ,(lsp--buffer-uri))
    (lambda (_) (message "Pause Grammarly checker..."))))
 
-(defun lsp-grammarly-dismiss ()
-  "Dismiss suggestions."
-  (interactive)
-  (lsp-request-async
-   "$/dismissSuggestion" `(:uri ,(lsp--buffer-uri) :suggestionId ,())
-   (lambda (_)
-     ;; TODO: ..
-     (user-error "[INFO] Currently WIP")
-     )))
-
 (defun lsp-grammarly-stats ()
   "Return document state."
   (interactive)
