@@ -2,6 +2,9 @@
          "0.3.0"
          "LSP Clients for Grammarly")
 
+(website-url "https://github.com/emacs-grammarly/lsp-grammarly")
+(keywords "lsp" "grammarly" "checker")
+
 (package-file "lsp-grammarly.el")
 
 (source "gnu")
