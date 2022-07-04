@@ -3,7 +3,7 @@
          "LSP Clients for Grammarly")
 
 (website-url "https://github.com/emacs-grammarly/lsp-grammarly")
-(keywords "lsp" "grammarly" "checker")
+(keywords "convenience" "lsp" "grammarly" "checker")
 
 (package-file "lsp-grammarly.el")
 
