@@ -7,7 +7,7 @@
 ;; URL: https://github.com/emacs-grammarly/lsp-grammarly
 ;; Version: 0.3.0
 ;; Package-Requires: ((emacs "27.1") (lsp-mode "6.1") (grammarly "0.3.0") (request "0.3.0") (s "1.12.0") (ht "2.3"))
-;; Keywords: lsp grammarly checker
+;; Keywords: convenience lsp grammarly checker
 
 ;; This file is NOT part of GNU Emacs.
 
