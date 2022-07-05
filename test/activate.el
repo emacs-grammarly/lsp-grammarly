@@ -29,6 +29,25 @@
 
 (require 'lsp-mode)
 
+(cl-defun lsp--npm-dependency-install (callback error-callback &key package &allow-other-keys)
+  (if-let ((npm-binary (executable-find "npm")))
+      (progn
+        ;; Explicitly `make-directory' to work around NPM bug in
+        ;; versions 7.0.0 through 7.4.1. See
+        ;; https://github.com/emacs-lsp/lsp-mode/issues/2364 for
+        ;; discussion.
+        (make-directory (f-join lsp-server-install-dir "npm" package "lib") 'parents)
+        (lsp-async-start-process callback
+                                 error-callback
+                                 npm-binary
+                                 "-g"
+                                 "--prefix"
+                                 (f-join lsp-server-install-dir "npm" package)
+                                 "install"
+                                 package))
+    (lsp-log "Unable to install %s via `npm' because it is not present" package)
+    nil))
+
 (lsp-install-server t 'grammarly-ls)  ; Start installation
 
 (defconst timeout 180
@@ -51,18 +70,12 @@
     (cl-incf timer 5)
     (message "Waited %s..." timer)))
 
-(message "wait! 1")
-
 (defconst server-install-path (lsp-package-path 'grammarly-ls)
   "The server install location.")
-
-(message "wait! 2")
 
 (unless (file-exists-p server-install-path)
   (error "Failed to install server: %s" server-install-path)
   (kill-emacs 1))
-
-(message "wait! 3")
 
 (message "Testing with a file...")
 
