@@ -54,12 +54,4 @@
 (defconst server-install-path (lsp-package-path 'grammarly-ls)
   "The server install location.")
 
-(unless (file-exists-p server-install-path)
-  (error "Failed to install server: %s" server-install-path)
-  (kill-emacs 1))
-
-(message "Testing with a file...")
-
-(find-file "README.md")  ; start lsp
-
 ;;; activate.el ends here
