@@ -58,6 +58,7 @@
     (lsp-log "Unable to install %s via `npm' because it is not present" package)
     nil))
 
+
 (lsp-install-server t 'grammarly-ls)  ; Start installation
 
 (defconst timeout 180
