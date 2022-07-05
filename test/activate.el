@@ -44,7 +44,11 @@
                          (buffer-list))))
 
 (with-current-buffer (get-lsp-install-buffer)
-  
+  (while (not (string-match-p "^Comint" (thing-at-point 'line)))
+    
+    (cl-incf timer 5)
+    (message "Waited %s..." timer)
+    )
   )
 
 ;;; activate.el ends here
