@@ -43,15 +43,13 @@
                            (string-prefix-p "*lsp-install:" (buffer-name buf)))
                          (buffer-list))))
 
-(defconst server-install-path (lsp-package-path 'grammarly-ls)
-  "The server install location.")
-
-(unless (file-exists-p server-install-path)
-  (error "Failed to install server: %s" server-install-path)
-  (kill-emacs 1))
-
-(message "Testing with a file...")
-
-(find-file "README.md")  ; start lsp
+(with-current-buffer (get-lsp-install-buffer)
+  (while (not (string-match-p "^Comint" (thing-at-point 'line)))
+    (goto-char (point-max))
+    (forward-line -1)
+    (sit-for 5)
+    (cl-incf timer 5)
+    (message "%s" (buffer-string))
+    (message "Waited %s..." timer)))
 
 ;;; activate.el ends here
