@@ -31,4 +31,18 @@
 
 (lsp-install-server t 'grammarly-ls)  ; Start installation
 
+(defconst timeout 180
+  "Timeout in seconds.")
+
+(defvar timer 0)
+
+(defun get-lsp-install-buffer ()
+  "Get lsp-insall buffer."
+  (nth 0
+       (cl-remove-if-not (lambda (buf)
+                           (string-prefix-p "*lsp-install:" (buffer-name buf)))
+                         (buffer-list))))
+
+(message "test: %s" (get-lsp-install-buffer))
+
 ;;; activate.el ends here
