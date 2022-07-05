@@ -43,6 +43,8 @@
                            (string-prefix-p "*lsp-install:" (buffer-name buf)))
                          (buffer-list))))
 
-(message "test: %s" (get-lsp-install-buffer))
+(with-current-buffer (get-lsp-install-buffer)
+  
+  )
 
 ;;; activate.el ends here
