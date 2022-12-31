@@ -1,6 +1,6 @@
 ;;; lsp-grammarly.el --- LSP Clients for Grammarly  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2021-2022  Shen, Jen-Chieh
+;; Copyright (C) 2021-2023  Shen, Jen-Chieh
 ;; Created date 2021-02-19 23:48:37
 
 ;; Author: Shen, Jen-Chieh <jcs090218@gmail.com>
