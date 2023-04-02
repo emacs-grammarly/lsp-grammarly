@@ -109,8 +109,10 @@ so you can login with either side.
 
 ### 🔍 Method 1: Login with VSCode (easier)
 
-Install VSCode and install extension [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
-from the extension panel.
+Install VSCode and, from the extension panel, select  [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly),
+click on the drop-down arrow and select "Install pre-release version". (There is an [issue](https://github.com/znck/grammarly/issues/351) with the release version that
+causes authentication to fail, but this issue does not appear to affect the pre-release version.
+Alternatively, you may try version 0.18.0, which users [report](https://github.com/znck/grammarly/issues/350#issuecomment-1483848906) as working fine.)
 
 <p align="center"><img src="./etc/login/vscode-grammarly-extension.png"/></p>
 
