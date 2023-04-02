@@ -103,16 +103,19 @@ List of todos, but I have not got time to implement these features.
 
 ## 💸 Using a Paid Grammarly Account
 
-You can either login with [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly)
+You can either login with [vscode-grammarly][]
 using VSCode or hit `M-x lsp-grammarly-login`. They both share the same credentials
 so you can login with either side.
 
 ### 🔍 Method 1: Login with VSCode (easier)
 
-Install VSCode and, from the extension panel, select  [vscode-grammarly](https://marketplace.visualstudio.com/items?itemName=znck.grammarly),
-click on the drop-down arrow and select "Install pre-release version". (There is an [issue](https://github.com/znck/grammarly/issues/351) with the release version that
-causes authentication to fail, but this issue does not appear to affect the pre-release version.
-Alternatively, you may try version 0.18.0, which users [report](https://github.com/znck/grammarly/issues/350#issuecomment-1483848906) as working fine.)
+Install VSCode and, from the extension panel, select [vscode-grammarly][]
+click on the drop-down arrow and select "Install pre-release version". (There
+is an [issue](https://github.com/znck/grammarly/issues/351) with the release
+version that causes authentication to fail, but this issue does not appear to
+affect the pre-release version. Alternatively, you may try version 0.18.0,
+which users [report](https://github.com/znck/grammarly/issues/350#issuecomment-1483848906)
+as working fine.)
 
 <p align="center"><img src="./etc/login/vscode-grammarly-extension.png"/></p>
 
@@ -174,3 +177,5 @@ If you would like to contribute to this project, you may either
 clone and make pull requests to this repository. Or you can
 clone the project and establish your own branch of this tool.
 Any methods are welcome!
+
+[vscode-grammarly]: https://marketplace.visualstudio.com/items?itemName=znck.grammarly
