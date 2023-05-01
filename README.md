@@ -3,6 +3,7 @@
 [![MELPA Stable](https://stable.melpa.org/packages/lsp-grammarly-badge.svg)](https://stable.melpa.org/#/lsp-grammarly)
 
 # lsp-grammarly
+> LSP Clients for Grammarly
 
 [![CI](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/test.yml/badge.svg)](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/test.yml)
 [![Activate](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/activate.yml/badge.svg)](https://github.com/emacs-grammarly/lsp-grammarly/actions/workflows/activate.yml)
