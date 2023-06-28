@@ -106,7 +106,8 @@ List of todos, but I have not got time to implement these features.
 
 ## 💸 Using a Paid Grammarly Account
 
-Note that nothing needs to be done for using the free version of grammarly.
+> 📢 Note that nothing needs to be done for using the free version of grammarly.
+
 You can either login with [vscode-grammarly][]
 using VSCode or hit `M-x lsp-grammarly-login`. They both share the same credentials
 so you can login with either side.
