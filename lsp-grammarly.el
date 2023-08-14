@@ -83,7 +83,7 @@ This is only for development use."
                  (const "expert"))
   :group 'lsp-grammarly)
 
-(defcustom lsp-grammarly-dialect "american"
+(defcustom lsp-grammarly-dialect "auto-text"
   "Sets the default dialect for every document."
   :type '(choice (const "american")
                  (const "australian")
