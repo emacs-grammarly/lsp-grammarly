@@ -104,7 +104,7 @@ This is only for development use."
 
 (defcustom lsp-grammarly-suggestions-conjunction-at-start-of-sentence
   nil
-  "Flags use of conjunctions such as 'but' and 'and' at the beginning of
+  "Flags use of conjunctions such as `but' and `and' at the beginning of
 sentences."
   :type 'boolean
   :group 'lsp-grammarly)
@@ -117,7 +117,7 @@ sentences."
 
 (defcustom lsp-grammarly-suggestions-informal-pronouns-academic
   nil
-  "Flags use of personal pronouns such as 'I' and 'you' in academic writing."
+  "Flags use of personal pronouns such as `I' and `you' in academic writing."
   :type 'boolean
   :group 'lsp-grammarly)
 
@@ -225,7 +225,7 @@ incorrect."
 
 (defcustom lsp-grammarly-suggestions-preposition-at-the-end-of-sentence
   nil
-  "Flags use of prepositions such as 'with' and 'in' at the end of sentences."
+  "Flags use of prepositions such as `with' and `in' at the end of sentences."
   :type 'boolean
   :group 'lsp-grammarly)
 
@@ -263,7 +263,7 @@ your reader."
 (defcustom lsp-grammarly-suggestions-split-infinitive
   t
   "Suggests rewriting split infinitives so that an adverb doesn't come between
-'to' and the verb."
+`to' and the verb."
   :type 'boolean
   :group 'lsp-grammarly)
 
@@ -288,7 +288,7 @@ fragments that may be intentional."
 
 (defcustom lsp-grammarly-suggestions-vocabulary
   t
-  "Suggests alternatives to bland and overused words such as 'good' and 'nice'."
+  "Suggests alternatives to bland and overused words such as `good' and `nice'."
   :type 'boolean
   :group 'lsp-grammarly)
 
