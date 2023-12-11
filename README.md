@@ -16,15 +16,17 @@
 **Table of Contents**
 
 - [lsp-grammarly](#lsp-grammarly)
-    - [💾 Quickstart](#💾-quickstart)
-    - [📇 Commands](#📇-commands)
-    - [🔧 Configuration](#🔧-configuration)
-    - [📝 Roadmap](#📝-roadmap)
-    - [💸 Using a Paid Grammarly Account](#💸-using-a-paid-grammarly-account)
-        - [🔍 Method 1: Login with VSCode (easier)](#🔍-method-1-login-with-vscode-easier)
-        - [🔍 Method 2: Login with Emacs (a bit complicated)](#🔍-method-2-login-with-emacs-a-bit-complicated)
-        - [Authentication from Grammarly website](#authentication-from-grammarly-website)
-    - [Contribute](#contribute)
+  - [💾 Quickstart](#💾-quickstart)
+  - [📇 Commands](#📇-commands)
+  - [🔧 Configuration](#🔧-configuration)
+  - [📝 Roadmap](#📝-roadmap)
+  - [💸 Using a Paid Grammarly Account](#💸-using-a-paid-grammarly-account)
+    - [🔍 Method 1: Login with VSCode (easier)](#🔍-method-1-login-with-vscode-easier)
+    - [🔍 Method 2: Login with Emacs (a bit complicated)](#🔍-method-2-login-with-emacs-a-bit-complicated)
+    - [Authentication from Grammarly website](#authentication-from-grammarly-website)
+  - [🛠️ Contribute](#🛠️-contribute)
+    - [🔬 Development](#🔬-development)
+  - [⚜️ License](#⚜️-license)
 
 <!-- markdown-toc end -->
 
