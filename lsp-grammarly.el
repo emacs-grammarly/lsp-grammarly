@@ -58,7 +58,8 @@ This is only for development use."
   'lsp-grammarly-modes 'lsp-grammarly-active-modes "0.2.1")
 
 (defcustom lsp-grammarly-active-modes
-  '(text-mode latex-mode org-mode markdown-mode)
+  '( text-mode org-mode markdown-mode
+     latex-mode LaTeX-mode)
   "List of major mode that work with Grammarly."
   :type 'list
   :group 'lsp-grammarly)
