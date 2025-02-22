@@ -59,7 +59,8 @@ This is only for development use."
 
 (defcustom lsp-grammarly-active-modes
   '( text-mode org-mode markdown-mode
-     latex-mode LaTeX-mode)
+     latex-mode LaTeX-mode
+     message-mode mu4e-compose-mode)
   "List of major mode that work with Grammarly."
   :type 'list
   :group 'lsp-grammarly)
