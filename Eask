@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "lsp-grammarly"
          "0.3.0"
          "LSP Clients for Grammarly")
