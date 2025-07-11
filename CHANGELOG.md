@@ -8,14 +8,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## 0.3.1 (Unreleased)
 > Released N/A
 
-* Add initialize options (#33)
-* Add login/logout commands back (#34)
+* Add initialize options ([`#33`](../../pull/33))
+* Add login/logout commands back ([`#34`](../../pull/34))
 
 ## 0.3.0
 > Released May 9, 2022
 
 * Allowed `textInfo` being `null` when getting document stats
-* Migrate to use the new server (#31)
+* Migrate to use the new server ([`#31`](../../pull/31))
 
 ## 0.2.2
 > Released Apr 04, 2021
